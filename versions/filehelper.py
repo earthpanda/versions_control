@@ -1,12 +1,7 @@
-
-
-
-import sys,os
-
+import os
 
 
 ### 默认使用编码格式为utf-8
-
 
 defaultEncoding="utf-8"
 
