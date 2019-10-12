@@ -1,6 +1,6 @@
 class ApkEntity:
     def __init__(self, packagename, vername, vercode, filesize, md5):
-        self.packageName = packagename
+        self.packagename = packagename
         self.vername = vername
         self.vercode = vercode
         self.filesize = filesize

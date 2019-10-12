@@ -1,0 +1,23 @@
+from entity.ApkEntity import *
+
+
+class ApkInfo:
+    arr = []
+
+    def create_apk_entity(self, package_name, version_name, version_code, file_size, md5):
+        apk_entity = ApkEntity(package_name, version_name, version_code, file_size, md5)
+        return apk_entity
+
+    def add_apk_entity(self, apk_entity):
+        self.arr.append(apk_entity)
+
+    def remove_apk_entity(self, apk_entity):
+        self.arr.remove(apk_entity)
+
+
+
+
+if __name__ == '__main__':
+    apk_info = ApkInfo()
+    apk_entity = apk_info.create_apk_entity(1, 1, 1, 1, 1)
+    print(apk_entity.toString())
