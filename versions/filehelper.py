@@ -8,7 +8,7 @@ defaultEncoding="utf-8"
 ###　得到当前路径 
 ###  如:D:\workspace\AS_workspace\versions_control\versions
 def getCurrentPath():
-	return os.path.dirname(__file__)+os.sep
+	return os.path.dirname(__file__)
 	pass
 
 
