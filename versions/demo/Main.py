@@ -1,4 +1,4 @@
-from versions.demo import Demojson
+from versions.demo.demojson import demojson
 
-demojson = Demojson()
+demojson = demojson()
 demojson.test_serialize()
