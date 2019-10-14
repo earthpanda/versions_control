@@ -1,4 +1,5 @@
 class ApkEntity:
+
     def __init__(self, devicename, channel, packagename, vername, vercode, filesize, md5):
         self.devicename = devicename
         self.channel = channel
