@@ -14,6 +14,7 @@ def getCurrentPath():
 
 
 ### 以当前.py文件的路径作为对照路径作为参考
+### 这里的文件夹要事先 创建好 这是个问题，需要修改，会有多级目录存在的情况 需要改成引用文件夹的方式
 ### 如果没有文件 则生成相应的文件
 ### relativePath 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
 ### content 要书写的内容 请确保是 string 格式
@@ -21,6 +22,30 @@ def getCurrentPath():
 ###                false 清空内容后 从开头进行文件的书写
 		
 def writeFileString(relativePath,content,append):
+
+	mode="w" 
+
+	if(append):
+
+		mode="a"	
+
+	else:	
+		mode="w"
+
+	flie=open(getCurrentPath()+relativePath,mode,encoding=defaultEncoding)	
+
+	try:
+		flie.write(content)
+		flie.flush
+		pass
+	except Exception as e:
+		raise
+	else:
+		pass
+	finally:
+		flie.close()
+		pass
+
 	pass
 
 ### 以当前.py文件的路径作为对照路径作为参考
