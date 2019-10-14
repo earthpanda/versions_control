@@ -1,4 +1,4 @@
-import os
+import os,traceback  
 
 
 ### 默认使用编码格式为utf-8
@@ -13,37 +13,52 @@ def getCurrentPath():
 
 
 
-### 以当前.py文件的路径作为对照路径作为参考
-### 这里的文件夹要事先 创建好 这是个问题，需要修改，会有多级目录存在的情况 需要改成引用文件夹的方式
+### 以当前.py文件的路径作为对照路径作为参考 	
+### 举例 writeFileString("test","test.txt","this is a test",True)
+### \test\test.txt
+
+### 多级目录 writeFileString("one\\two\\three","test.txt","this is a test",True)
+### \one\two\three\test.txt
+
 ### 如果没有文件 则生成相应的文件
-### relativePath 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
+### relativeFolderPath 相对路径 以当前.py文件作为参考路径 进行相应文件夹创建
 ### content 要书写的内容 请确保是 string 格式
 ### append 是否追加 true 在原文件后面进行内容的书写 
 ###                false 清空内容后 从开头进行文件的书写
 		
-def writeFileString(relativePath,content,append):
+def writeFileString(relativeFolderPath,fileName,content,append):
 
 	mode="w" 
+	file=None
 
 	if(append):
-
 		mode="a"	
 
 	else:	
 		mode="w"
 
-	flie=open(getCurrentPath()+relativePath,mode,encoding=defaultEncoding)	
-
 	try:
+		folder=os.path.join(getCurrentPath(),relativeFolderPath)
+		
+		#如果文件夹不存在 则进行创建	
+		if not(os.path.exists(folder)):
+			os.makedirs(folder,0o777)
+	
+		path=os.path.join(folder,fileName)
+		flie=open(path,mode,encoding=defaultEncoding)
 		flie.write(content)
 		flie.flush
 		pass
+
 	except Exception as e:
-		raise
+		traceback.print_exc()
+
 	else:
 		pass
+
 	finally:
-		flie.close()
+		if (None!=file):
+			flie.close()
 		pass
 
 	pass
