@@ -1,6 +1,3 @@
-from entity.ApkEntity import *
-
-
 class ApkInfo:
     arr = []
 
