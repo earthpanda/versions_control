@@ -10,4 +10,5 @@ class ApkEntity:
         self.md5 = md5
 
     def toString(self):
-        print("apkEntity =", self.devicename, self.channel, self.packagename, self.vername, self.vercode, self.filesize, self.md5)
+        print("apkEntity =", self.devicename, self.channel, self.packagename, self.vername, self.vercode, self.filesize,
+              self.md5)
