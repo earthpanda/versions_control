@@ -1,8 +1,8 @@
-from versions.entity import ApkEntity
+from versions.entity.ApkEntity import *
 import json
 
 
-class Demojson:
+class demojson:
     def __init__(self):
         print("init")
 
