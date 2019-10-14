@@ -63,11 +63,38 @@ def writeFileString(relativeFolderPath,fileName,content,append):
 
 	pass
 
+
+### 读取一个文件的内容 以String的格式返回
+### 举例 filehelper.readFileString("one\\two\\three\\test.txt")
 ### 以当前.py文件的路径作为对照路径作为参考
 ### 如果没有文件 则不做任何处理 给于相应的提示
-### relativePath 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
+### relativePath 相对路径带文件名 如 "one\\two\\three\\test.txt"
 ### 返回内容的格式为String
 def readFileString(relativePath):
+	mode="r"
+	file=None
+
+	try:
+		file=open(os.path.join(getCurrentPath(),relativePath),mode,encoding=defaultEncoding)
+		contentLines=file.readlines()
+		content=""
+		for line in contentLines:
+			content=content+line
+			pass
+
+		return content
+
+
+	except Exception as e:
+		traceback.print_exc()
+
+	finally:
+		if(None!=file):
+			file.close()
+
+		pass
+
+
 	pass
 
 
