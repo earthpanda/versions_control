@@ -1,3 +1,6 @@
+from ..entity.ApkEntity import *
+
+
 class ApkInfo:
     arr = []
 
@@ -21,4 +24,4 @@ class ApkInfo:
 if __name__ == '__main__':
     apk_info = ApkInfo()
     apk = apk_info.create_apk_entity(1, 1, 1, 1, 1, 1, 1)
-    print(apk.toString())
+    print(apk.to_string())
