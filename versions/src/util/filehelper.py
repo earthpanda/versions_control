@@ -5,13 +5,6 @@ import os,traceback
 
 defaultEncoding="utf-8"
 
-###　得到当前路径 
-###  如:D:\workspace\AS_workspace\versions_control\versions
-def get_current_path():
-	return os.path.dirname(__file__)
-	pass
-
-
 
 ### 以当前.py文件的路径作为对照路径作为参考 	
 ### 举例 write_file_string("test","test.txt","this is a test",True)
@@ -38,7 +31,7 @@ def write_file_string(relative_folder_path,file_name,content,append):
 		mode="w"
 
 	try:
-		folder=os.path.join(get_current_path(),relative_folder_path)
+		folder=os.path.join(relative_folder_path)
 		
 		#如果文件夹不存在 则进行创建	
 		if not(os.path.exists(folder)):
@@ -75,7 +68,7 @@ def read_file_string(relative_path):
 	file=None
 
 	try:
-		file=open(os.path.join(get_current_path(),relative_path),mode,encoding=defaultEncoding)
+		file=open(os.path.join(relative_path),mode,encoding=defaultEncoding)
 		contentLines=file.readlines()
 		content=""
 		for line in contentLines:

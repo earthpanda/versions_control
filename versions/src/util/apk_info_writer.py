@@ -18,4 +18,3 @@ class ApkInfoWriter:
                 os.remove(get_farthest_file(path))
             # 创建文件夹
             mkdir(path + os.sep + time)
-            
