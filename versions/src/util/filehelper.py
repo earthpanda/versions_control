@@ -1,9 +1,8 @@
-import os,traceback  
-
+import os, traceback
 
 ### 默认使用编码格式为utf-8
 
-defaultEncoding="utf-8"
+defaultEncoding = "utf-8"
 
 
 ### 以当前.py文件的路径作为对照路径作为参考 	
@@ -18,43 +17,42 @@ defaultEncoding="utf-8"
 ### content 要书写的内容 请确保是 string 格式
 ### append 是否追加 true 在原文件后面进行内容的书写 
 ###                false 清空内容后 从开头进行文件的书写
-		
-def write_file_string(relative_folder_path,file_name,content,append):
 
-	mode="w" 
-	file=None
+def write_file_string(relative_folder_path, file_name, content, append):
+    mode = "w"
+    file = None
 
-	if(append):
-		mode="a"	
+    if (append):
+        mode = "a"
 
-	else:	
-		mode="w"
+    else:
+        mode = "w"
 
-	try:
-		folder=os.path.join(relative_folder_path)
-		
-		#如果文件夹不存在 则进行创建	
-		if not(os.path.exists(folder)):
-			os.makedirs(folder,0o777)
-	
-		path=os.path.join(folder,file_name)
-		flie=open(path,mode,encoding=defaultEncoding)
-		flie.write(content)
-		flie.flush
-		pass
+    try:
+        folder = os.path.join(relative_folder_path)
 
-	except Exception as e:
-		traceback.print_exc()
+        # 如果文件夹不存在 则进行创建
+        if not (os.path.exists(folder)):
+            os.makedirs(folder, 0o777)
 
-	else:
-		pass
+        path = os.path.join(folder, file_name)
+        flie = open(path, mode, encoding=defaultEncoding)
+        flie.write(content)
+        flie.flush
+        pass
 
-	finally:
-		if (None!=file):
-			flie.close()
-		pass
+    except Exception as e:
+        traceback.print_exc()
 
-	pass
+    else:
+        pass
+
+    finally:
+        if (None != file):
+            flie.close()
+        pass
+
+    pass
 
 
 ### 读取一个文件的内容 以String的格式返回
@@ -64,31 +62,30 @@ def write_file_string(relative_folder_path,file_name,content,append):
 ### relative_path 相对路径带文件名 如 "one\\two\\three\\test.txt"
 ### 返回内容的格式为String
 def read_file_string(relative_path):
-	mode="r"
-	file=None
+    mode = "r"
+    file = None
 
-	try:
-		file=open(os.path.join(relative_path),mode,encoding=defaultEncoding)
-		contentLines=file.readlines()
-		content=""
-		for line in contentLines:
-			content=content+line
-			pass
+    try:
+        file = open(os.path.join(relative_path), mode, encoding=defaultEncoding)
+        contentLines = file.readlines()
+        content = ""
+        for line in contentLines:
+            content = content + line
+            pass
 
-		return content
-
-
-	except Exception as e:
-		traceback.print_exc()
-
-	finally:
-		if(None!=file):
-			file.close()
-
-		pass
+        return content
 
 
-	pass
+    except Exception as e:
+        traceback.print_exc()
+
+    finally:
+        if (None != file):
+            file.close()
+
+        pass
+
+    pass
 
 
 ### 重命名一个文件 返回重命名后的绝对路径
@@ -98,7 +95,7 @@ def read_file_string(relative_path):
 ### 重命名文件 返回重命名后的绝对路径
 
 def rename_file(relative_path):
-	pass
+    pass
 
 
 ### 删除文件
@@ -107,7 +104,8 @@ def rename_file(relative_path):
 ### relative_path 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
 ### 如果删除成功 返回 true 否则 返回false
 def delete_file(relative_path):
-	pass
+    pass
+
 
 ### copy文件
 ### 以当前.py文件的路径作为对照路径作为参考
@@ -115,11 +113,5 @@ def delete_file(relative_path):
 ### relative_path_src 原相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
 ### relative_path_dst 需要copy的文件地址 如 os.sep+"test.txt" 代表 "\test.txt"
 ### 如果copy成功 返回 true 否则 返回false
-def copy_file(relative_path_src,relative_path_dst):
-	pass
-
-
-
-
-
-
+def copy_file(relative_path_src, relative_path_dst):
+    pass
