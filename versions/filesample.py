@@ -1,9 +1,9 @@
 import os
 from src.util.filehelper import write_file_string,read_file_string,rename_file,delete_file,copy_file
-from src.midground.file.midfile import test
+from src.midground.file.midfile import delete_apks
 
 
-s=os.path.join(os.getcwd(),"..","file")
+s=os.path.join(os.getcwd(),"file")
 print(s)
 
 
@@ -21,7 +21,9 @@ print(s)
 
 # copy_file(os.path.join(s,"one","two","three","test.txt"),os.path.join(s,"one","two","three","test1.txt"))
 
-test()
+
+
+delete_apks(s)
 
 
 
