@@ -1,4 +1,6 @@
-import os, traceback
+import os
+import traceback
+import shutil
 
 ### 默认使用编码格式为utf-8
 
@@ -115,20 +117,64 @@ def rename_file(folder_path,file_name,file_rename):
 
 
 
-### 删除文件
-### 以当前.py文件的路径作为对照路径作为参考
-### 如果文件不存在 则不做任何处理 给予相应的提示
-### relative_path 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
-### 如果删除成功 返回 true 否则 返回false
-def delete_file(relative_path):
-    pass
 
 
-### copy文件
-### 以当前.py文件的路径作为对照路径作为参考
-### 进行文件copy 如果没有原文件 则 不做任何处理 给予相应的提示
-### relative_path_src 原相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
-### relative_path_dst 需要copy的文件地址 如 os.sep+"test.txt" 代表 "\test.txt"
-### 如果copy成功 返回 true 否则 返回false
-def copy_file(relative_path_src, relative_path_dst):
-    pass
+"""
+
+ 如果文件不存在 则不做任何处理 给予相应的提示
+ path 文件或者文件夹的路径 
+ is_folder 是否是文件夹
+ 如果删除成功 返回 true 否则 返回false
+ 注意os.removedirs 用于删除空目录 如果有文件则不删除
+
+"""
+def delete_file(path,is_folder):
+
+
+
+	try:
+
+		if(is_folder):
+
+			shutil.rmtree(path)
+
+		else:
+			os.remove(path)
+
+		return True
+		
+	except Exception as e:
+		traceback.print_exc()
+	else:
+		pass
+	finally:
+		pass
+
+
+"""
+
+copy文件
+进行文件copy 如果没有原文件 则 不做任何处理 给予相应的提示
+path_src 原路径 
+path_dst 目标路径
+如果copy成功 返回 true 否则 返回false
+
+"""
+
+def copy_file(path_src, path_dst):
+
+	try:
+
+		shutil.copyfile(path_src,path_dst)
+		pass
+
+	except Exception as e:
+		
+		traceback.print_exc()
+
+	else:
+		pass
+	finally:
+		pass
+
+    
