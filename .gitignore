@@ -4,7 +4,7 @@
 /build
 /captures
 .externalNativeBuild
-
+*.pyc
 # Intellij
 *.iml
 *.ipr
