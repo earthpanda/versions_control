@@ -6,9 +6,6 @@ import shutil
 
 defaultEncoding = "utf-8"
 
-
-
-
 """
 
 对文件进行写入操作
@@ -19,6 +16,8 @@ append 是否追加 true 在原文件后面进行内容的书写
                false 清空内容后 从开头进行文件的书写
 
 """
+
+
 def write_file_string(folder_path, file_name, content, append):
     mode = "w"
     file = None
@@ -45,8 +44,10 @@ def write_file_string(folder_path, file_name, content, append):
     except Exception as e:
         traceback.print_exc()
 
+
     else:
         pass
+
 
     finally:
         if (None != file):
@@ -54,7 +55,6 @@ def write_file_string(folder_path, file_name, content, append):
         pass
 
     pass
-
 
 
 """
@@ -65,6 +65,8 @@ file_path 文件路径
 返回内容的格式为String
 
 """
+
+
 def read_file_string(file_path):
     mode = "r"
     file = None
@@ -80,6 +82,7 @@ def read_file_string(file_path):
         return content
 
 
+
     except Exception as e:
         traceback.print_exc()
 
@@ -92,7 +95,6 @@ def read_file_string(file_path):
     pass
 
 
-
 """
 重命名一个文件 返回重命名后的绝对路径
 如果文件不存在 则不做任何处理 给予相应的提示
@@ -102,19 +104,18 @@ file_rename 重命名的文件名称
 
 """
 
-def rename_file(folder_path,file_name,file_rename):
 
-	try:
-		os.rename(os.path.join(folder_path,file_name),os.path.join(folder_path,file_rename))
-		return os.path.join(folder_path,file_rename)
-	except Exception as e:
+def rename_file(folder_path, file_name, file_rename):
+    try:
+        os.rename(os.path.join(folder_path, file_name), os.path.join(folder_path, file_rename))
+        return os.path.join(folder_path, file_rename)
+    except Exception as e:
 
-		traceback.print_exc()
-	else:
-		pass
-	finally:
-		pass
-
+        traceback.print_exc()
+    else:
+        pass
+    finally:
+        pass
 
 
 
