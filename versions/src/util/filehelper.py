@@ -4,21 +4,19 @@ import os, traceback
 
 defaultEncoding = "utf-8"
 
+"""
 
-### 以当前.py文件的路径作为对照路径作为参考 	
-### 举例 write_file_string("test","test.txt","this is a test",True)
-### \test\test.txt
+对文件进行写入操作
+如果没有文件 则生成相应的文件
+folder_path 文件夹目录
+content 要书写的内容 请确保是 string 格式
+append 是否追加 true 在原文件后面进行内容的书写 
+               false 清空内容后 从开头进行文件的书写
 
-### 多级目录 write_file_string("one\\two\\three","test.txt","this is a test",True)
-### \one\two\three\test.txt
+"""
 
-### 如果没有文件 则生成相应的文件
-### relativeFolderPath 相对路径 以当前.py文件作为参考路径 进行相应文件夹创建
-### content 要书写的内容 请确保是 string 格式
-### append 是否追加 true 在原文件后面进行内容的书写 
-###                false 清空内容后 从开头进行文件的书写
 
-def write_file_string(relative_folder_path, file_name, content, append):
+def write_file_string(folder_path, file_name, content, append):
     mode = "w"
     file = None
 
@@ -29,7 +27,7 @@ def write_file_string(relative_folder_path, file_name, content, append):
         mode = "w"
 
     try:
-        folder = os.path.join(relative_folder_path)
+        folder = os.path.join(folder_path)
 
         # 如果文件夹不存在 则进行创建
         if not (os.path.exists(folder)):
@@ -44,8 +42,10 @@ def write_file_string(relative_folder_path, file_name, content, append):
     except Exception as e:
         traceback.print_exc()
 
+
     else:
         pass
+
 
     finally:
         if (None != file):
@@ -55,18 +55,22 @@ def write_file_string(relative_folder_path, file_name, content, append):
     pass
 
 
-### 读取一个文件的内容 以String的格式返回
-### 举例 filehelper.read_file_string("one\\two\\three\\test.txt")
-### 以当前.py文件的路径作为对照路径作为参考
-### 如果没有文件 则不做任何处理 给于相应的提示
-### relative_path 相对路径带文件名 如 "one\\two\\three\\test.txt"
-### 返回内容的格式为String
-def read_file_string(relative_path):
+"""
+
+读取一个文件的内容 以String的格式返回
+如果没有文件 则不做任何处理 给于相应的提示
+file_path 文件路径
+返回内容的格式为String
+
+"""
+
+
+def read_file_string(file_path):
     mode = "r"
     file = None
 
     try:
-        file = open(os.path.join(relative_path), mode, encoding=defaultEncoding)
+        file = open(os.path.join(file_path), mode, encoding=defaultEncoding)
         contentLines = file.readlines()
         content = ""
         for line in contentLines:
@@ -74,6 +78,7 @@ def read_file_string(relative_path):
             pass
 
         return content
+
 
 
     except Exception as e:
@@ -88,14 +93,27 @@ def read_file_string(relative_path):
     pass
 
 
-### 重命名一个文件 返回重命名后的绝对路径
-### 以当前.py文件的路径作为对照路径作为参考
-### 如果文件不存在 则不做任何处理 给予相应的提示
-### relative_path 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
-### 重命名文件 返回重命名后的绝对路径
+"""
+重命名一个文件 返回重命名后的绝对路径
+如果文件不存在 则不做任何处理 给予相应的提示
+folder_path 文件夹目录
+file_name 原先的文件名称
+file_rename 重命名的文件名称
 
-def rename_file(relative_path):
-    pass
+"""
+
+
+def rename_file(folder_path, file_name, file_rename):
+    try:
+        os.rename(os.path.join(folder_path, file_name), os.path.join(folder_path, file_rename))
+        return os.path.join(folder_path, file_rename)
+    except Exception as e:
+
+        traceback.print_exc()
+    else:
+        pass
+    finally:
+        pass
 
 
 ### 删除文件
