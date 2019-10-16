@@ -28,7 +28,7 @@ class ui(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setGeometry(200, 300, 800, 1000)
+        self.setGeometry(400, 100, 800, 800)
         self.setWindowTitle('文件上传以及信息打印')
         v_main_layout = QVBoxLayout()
         upload_label = QLabel("需要上传的apk，拖拽文件进入")
@@ -49,19 +49,22 @@ class ui(QWidget):
             platform_layout.addWidget(platform_radio, *position)
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
-
         h_layout_down_path = QHBoxLayout()
         l_edit_down_path = QLineEdit()
         btn_select_down_path = QPushButton("选择apk下载目录")
         h_layout_down_path.addWidget(l_edit_down_path)
+        h_layout_down_path.setStretchFactor(l_edit_down_path, 5)
         h_layout_down_path.addWidget(btn_select_down_path)
+        h_layout_down_path.setStretchFactor(btn_select_down_path, 1)
 
         file_path_label = QLabel("apk提交信息记录文件保存路径")
         h_layout_file_path = QHBoxLayout()
         l_edit_file_path = QLineEdit()
         btn_select_file_path = QPushButton("选择文件保存路径")
         h_layout_file_path.addWidget(l_edit_file_path)
+        h_layout_file_path.setStretchFactor(l_edit_file_path, 5)
         h_layout_file_path.addWidget(btn_select_file_path)
+        h_layout_file_path.setStretchFactor(btn_select_file_path, 1)
 
         remote_apk_label = QLabel("远程apk包信息")
         h_layout_remote_apk = QHBoxLayout()
@@ -71,7 +74,9 @@ class ui(QWidget):
 
         btn_action_down = QPushButton("下载apk并解析")
         h_layout_remote_apk.addWidget(remote_apk_table)
+        h_layout_remote_apk.setStretchFactor(remote_apk_table, 5)
         h_layout_remote_apk.addWidget(btn_action_down)
+        h_layout_remote_apk.setStretchFactor(btn_action_down, 1)
 
         log_view_label = QLabel("信息输出打印区")
         h_layout_log_view = QHBoxLayout()
@@ -82,12 +87,16 @@ class ui(QWidget):
         v_layout_actions.addWidget(open_file_btn)
         v_layout_actions.addWidget(upload_btn)
         h_layout_log_view.addWidget(text_edit_log)
+        h_layout_log_view.setStretchFactor(text_edit_log, 5)
         h_layout_log_view.addLayout(v_layout_actions)
+        h_layout_log_view.setStretchFactor(v_layout_actions, 1)
 
         # 添加上传文件信息显示表格
         h_upload_table.addWidget(drag_table)
+        h_upload_table.setStretchFactor(drag_table, 5)
         # 添加平台单选列表
         h_upload_table.addLayout(platform_layout)
+        h_upload_table.setStretchFactor(platform_layout, 1)
         # 添加上传文件拖拽提示
         v_main_layout.addWidget(upload_label)
         # 添加上传文件信息显示布局
