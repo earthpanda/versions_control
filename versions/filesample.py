@@ -10,7 +10,6 @@ s = os.path.join(os.getcwd(), "file", "one")
 
 print(s)
 
-
 # write_file_string(os.path.join(s,"one","two","three"), "test.txt", "this is a test in three ", False)
 # write_file_string(os.path.join(s,"test"), "test.txt", "this is a test", False)
 
@@ -29,9 +28,10 @@ print(s)
 delete_apks(s)
 delete_all(s)
 
+
 # def print_log(log):
 #     print(log)
-
+#
 #
 # def test():
 #     apk_infos = ApkInfo()

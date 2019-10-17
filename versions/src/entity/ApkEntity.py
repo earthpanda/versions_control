@@ -28,7 +28,7 @@ class ApkEntity:
 
     # 返回文件内容
     def file_content(self):
-        return "上传时间：" + format_time1() + "\n" + \
+        return "上传时间：" + format_time2() + "\n" + \
                "MD5：" + self.md5 + "\n" + \
                "apk大小：" + self.file_size + "\n" + \
                "版本名称：" + self.version_name
