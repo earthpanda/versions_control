@@ -28,19 +28,19 @@ print(s)
 # copy_file(os.path.join(s,"one","two","three","test.txt"),os.path.join(s,"one","two","three","test1.txt"))
 
 
-# delete_apks(s)
+delete_apks(s)
 
 
-def test():
-    apk_infos = ApkInfo()
-    apk1 = apk_infos.create_apk_entity("F1", "DBOS_F1", "launcher", "F12080", "2080", "100", "xc")
-    apk2 = apk_infos.create_apk_entity("C1", "DBOS_C1", "launcher", "C12080", "2080", "100", "xcc")
-    apk_infos.add_apk_entity(apk1)
-    apk_infos.add_apk_entity(apk2)
+# def test():
+#     apk_infos = ApkInfo()
+#     apk1 = apk_infos.create_apk_entity("F1", "DBOS_F1", "launcher", "F12080", "2080", "100", "xc")
+#     apk2 = apk_infos.create_apk_entity("C1", "DBOS_C1", "launcher", "C12080", "2080", "100", "xcc")
+#     apk_infos.add_apk_entity(apk1)
+#     apk_infos.add_apk_entity(apk2)
 
-    file_writer = ApkInfoWriter()
-    file_writer.write_to_file(apk_infos)
+#     file_writer = ApkInfoWriter()
+#     file_writer.write_to_file(apk_infos)
 
 
-if __name__ == '__main__':
-    test()
+# if __name__ == '__main__':
+#     test()
