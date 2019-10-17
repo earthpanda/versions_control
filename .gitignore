@@ -13,8 +13,8 @@
 .idea/gradle.xml
 .idea/misc.xml
 .idea/vcs.xml
-*.C1
-*.F1
+*/C1
+*/F1
 
 /provider/build
 !.idea/codeStyleSettings.xml

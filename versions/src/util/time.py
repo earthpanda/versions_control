@@ -10,4 +10,4 @@ def format_time1():
 
 
 def format_time2():
-    return time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
