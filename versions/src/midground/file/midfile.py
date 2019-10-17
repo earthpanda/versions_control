@@ -25,6 +25,10 @@ def delete_all(folder_path):
 	pass	
 
 
+
+"""
+
+"""
 def rename_apks(folder_path):
 
 	pass
