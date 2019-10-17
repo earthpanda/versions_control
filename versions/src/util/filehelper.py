@@ -220,4 +220,42 @@ def delete_feature_file(folder_path,suffix):
         pass    
 
     pass
+
+"""
+    删除某个文件夹下的所有文件
+    如果不是文件夹 或者 文件不存在则不处理
+
+    folder_path 文件夹路径
+"""
+def delete_all_in_folder(folder_path):
+
+    if not (os.path.exists(folder_path)):
+        print(folder_path +" is not exits")
+        return
+    
+    if not (os.path.isdir(folder_path)):
+        print(folder_path+" is not a folder")
+        return
+
+    try:
+        # 获取当前目录下的所有文件
+        list=os.listdir(folder_path)
+
+        for i in range(len(list)):
+            path=os.path.join(folder_path,list[i])
+            delete_file(path,os.path.isdir(path))
+          
+        pass
+
+    except Exception as e:
+        traceback.print_exc()       
+    else:
+        pass
+    finally:
+        pass    
+
+    pass    
+
+
+    pass    
     

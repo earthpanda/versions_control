@@ -1,6 +1,6 @@
 import os
 from src.util.filehelper import write_file_string, read_file_string, rename_file, delete_file, copy_file
-from src.midground.file.midfile import delete_apks
+from src.midground.file.midfile import delete_apks,delete_all
 from src.entity.ApkEntity import *
 from src.util.apk_info_writer import *
 from src.apk.apk_info import *
@@ -8,7 +8,7 @@ import src.util.time
 
 
 
-s=os.path.join(os.getcwd(),"file","test")
+s=os.path.join(os.getcwd(),"file","one")
 
 print(s)
 
@@ -29,6 +29,8 @@ print(s)
 
 
 delete_apks(s)
+delete_all(s)
+
 
 
 # def test():
