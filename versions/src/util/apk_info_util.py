@@ -11,6 +11,7 @@ def get_farthest_file(file_dir):
     return file_path
 
 
+# 创建文件
 def mkdir(path):
     # 引入模块
     import os
@@ -35,6 +36,7 @@ def mkdir(path):
         return False
 
 
+# 获取当前文件路径下所有的文件（不包含文件夹）
 def file_list(file_dir):
     # root 当前目录路径
     # dirs 当前路径下所有子目录

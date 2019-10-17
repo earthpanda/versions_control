@@ -1,4 +1,3 @@
-from src.util.time import format_time1
 from .filehelper import *
 from ..apk.apk_info import *
 from ..util.apk_info_util import *
