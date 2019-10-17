@@ -3,7 +3,7 @@ from src.util.filehelper import write_file_string,read_file_string,rename_file,d
 from src.midground.file.midfile import delete_apks
 
 
-s=os.path.join(os.getcwd(),"file")
+s=os.path.join(os.getcwd(),"file","test")
 print(s)
 
 
