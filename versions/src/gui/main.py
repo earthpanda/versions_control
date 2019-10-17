@@ -9,18 +9,21 @@ apk上传固件小工具
 import apk
 import sys
 import random
-from PyQt5.QtGui import QFont, QColor
+from PyQt5.QtGui import QFont, QColor, QTextCursor
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
 import re
 import os
 
 from server_handler import ServerClient
+import platform_data
+from apk import ApkParser
 
 from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
                              QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
                              QHeaderView, QLabel, QFrame, QTableWidget,
-                             QGridLayout, QRadioButton, QLineEdit, QTextEdit, QFileDialog)
+                             QGridLayout, QRadioButton, QLineEdit, QTextEdit,
+                             QFileDialog)
 
 
 class Main(QWidget):
@@ -67,11 +70,11 @@ class Main(QWidget):
         btn_select_file_path = QPushButton("选择文件保存路径")
 
         remote_apk_label = QLabel("远程apk包信息")
-        remote_apk_table = QTableWidget(10, 6)
-        remote_apk_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
-                                                    '重命名', '渠道', '服务端路径'])
-        remote_apk_table.horizontalHeader().resizeSection(0, 200)
-        remote_apk_table.horizontalHeader().resizeSection(5, 200)
+        self.remote_apk_table = QTableWidget(10, 6)
+        self.remote_apk_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
+                                                         '重命名', '渠道', '服务端路径'])
+        self.remote_apk_table.horizontalHeader().resizeSection(0, 200)
+        self.remote_apk_table.horizontalHeader().resizeSection(5, 200)
 
         btn_action_down = QPushButton("下载apk并解析")
         log_view_label = QLabel("信息输出打印区")
@@ -95,7 +98,7 @@ class Main(QWidget):
         v_left_layout.addWidget(file_path_label)
         v_left_layout.addWidget(self.l_edit_file_path)
         v_left_layout.addWidget(remote_apk_label)
-        v_left_layout.addWidget(remote_apk_table)
+        v_left_layout.addWidget(self.remote_apk_table)
         v_left_layout.addWidget(log_view_label)
         v_left_layout.addWidget(self.text_edit_log)
 
@@ -117,16 +120,43 @@ class Main(QWidget):
         self.setLayout(h_main_layout)
         self.show()
 
+    def autoScrollTextEdit(self):
+        cursor = self.text_edit_log.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        self.text_edit_log.setTextCursor(cursor)
+
     def openDirDialog(self, line_edit):
         path = QFileDialog.getExistingDirectory(self, "", "./")
         line_edit.setText(path)
 
     def downApks(self):
-        self.serverClient.login()
-        log = self.serverClient.download_apks()
-        self.text_edit_log.setText(log)
-        log_branch = self.serverClient.getBranch()
-        self.text_edit_log.insertPlainText(log_branch)
+        self.serverClient.login(self.showInfos)
+        self.serverClient.download_apks(self.showInfos)
+        self.serverClient.getBranch(self.showInfos)
+        self.parseApks()
+
+    def parseApks(self):
+        parser = ApkParser()
+        remote_apk_path = "/Users/nemoli/Downloads/remoteApks"
+        files = os.listdir(remote_apk_path)
+        i = 0
+        for file in files:
+            if file.endswith("apk"):
+                remote_apk = os.path.join(remote_apk_path, file)
+                parser.getAppBaseInfo(remote_apk)
+                apkInfo = parser.apkInfo
+                self.remote_apk_table.setItem(i, 0,
+                                              QTableWidgetItem(apkInfo["packagename"]))
+                self.remote_apk_table.setItem(i, 1,
+                                              QTableWidgetItem(apkInfo["versionCode"]))
+                self.remote_apk_table.setItem(i, 2,
+                                              QTableWidgetItem(apkInfo["versionName"]))
+                # print(remote_apk)
+                # print(file)
+
+    def showInfos(self, info):
+        self.text_edit_log.append(info)
+        self.autoScrollTextEdit()
 
 
 class DragTable(QTableWidget):
@@ -151,12 +181,17 @@ class DragTable(QTableWidget):
             apkParser = apk.ApkParser()
             apkParser.getAppBaseInfo(url_use)
             print(apk.ApkParser.apkInfo)
+            packagename = apk.ApkParser.apkInfo["packagename"]
             self.setItem(i, 0, QTableWidgetItem(
                 apk.ApkParser.apkInfo["packagename"]))
             self.setItem(i, 1, QTableWidgetItem(
                 apk.ApkParser.apkInfo["versionCode"]))
             self.setItem(i, 2, QTableWidgetItem(
                 apk.ApkParser.apkInfo["versionName"]))
+            self.setItem(i, 3,
+                         QTableWidgetItem(platform_data.package_name_map[packagename]))
+            self.setItem(i, 5,
+                         QTableWidgetItem(platform_data.remote_system_apk_path["F1"]))
             i += 1
 
 

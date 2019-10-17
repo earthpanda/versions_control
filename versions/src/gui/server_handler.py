@@ -1,4 +1,5 @@
 # 基于ssh,用于连接远程服务器做操作：远程执行命令，上传或下载文件
+
 import paramiko
 import os
 import re
@@ -11,7 +12,7 @@ class ServerClient:
         self.remote_path_parent = "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
         self.local_path_parent = "/Users/nemoli/Downloads/remoteApks"
 
-    def login(self):
+    def login(self, callback):
         # 创建一个ssh对象
         self.client = paramiko.SSHClient()
 
@@ -25,8 +26,9 @@ class ServerClient:
         # 3.连接服务器
         self.client.connect(hostname='192.168.18.168', port=22,
                             username='user', password='123456')
+        callback("登录服务器成功")
 
-    def download_apks(self):
+    def download_apks(self, callback):
         # 4. 打开sftp连接
         sftp_client = self.client.open_sftp()
 
@@ -35,13 +37,11 @@ class ServerClient:
         for apk in remote_apks:
             remote_path = self.remote_path_parent + "/" + apk
             local_path = self.local_path_parent + "/" + apk
-
             # sftp_client.get(remote_path, local_path)
+            callback("下载文件:" + local_path)
             # print(remote_path)
-            log = log + remote_path + "\n"
-        return log
 
-    def getBranch(self):
+    def getBranch(self, callback):
         # 4.执行操作
         # 标准输入，标准输出，标准错误输出。
         cmd = 'cd {}; pwd; git branch'.format(self.remote_code_path)
@@ -54,16 +54,21 @@ class ServerClient:
         # 5.获取命令的执行结果
         # 使结果具有可读性
         res = stdout.read().decode('utf-8')
-        print(res)
-        return res
+        callback(res)
 
-    def logout(self):
+    def logout(self, callback):
         # 6.断开连接
         self.client.close()
+        callback("退出登录")
+
+    def callback(self, log):
+        print(log)
 
 
 if __name__ == "__main__":
     client = ServerClient()
-    client.login()
-    log = client.download_apks()
-    client.getBranch()
+    # def log(result):
+    # print(result)
+    client.login(client.callback)
+    client.download_apks(client.callback)
+    client.getBranch(client.callback)
