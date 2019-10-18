@@ -53,7 +53,7 @@ print(root)
 
 
 
-s={"model": "B1",
+s={"model": "F1",
 	"code": "20801",
 	"content": [{
 		"versionName": "f1_20802",
@@ -72,13 +72,17 @@ s={"model": "B1",
 
 
 p=json.dumps(s)
-print(p)
 data=json.loads(p)
 
 
 
 update_apk_infos(p)
 
+test={"model": "C1",
+	"code": "20801"
+}
 
 
-get_apk_infos(s)
+get_apk_infos(json.dumps(test))
+
+

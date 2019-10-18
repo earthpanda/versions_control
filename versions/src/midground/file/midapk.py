@@ -41,9 +41,42 @@ def update_apk_infos(json_string):
 	"code": "20800"
 }
 
+
+如果文件不存在 则返回这样的信息
+
 """
-def get_apk_infos(json):
-	print("get_apk_infos")
+def get_apk_infos(json_string):
+
+	try:
+		data_in=json.loads(json_string)
+		model=data_in["model"]
+		code=data_in["code"]
+
+		folder_path=os.path.join(root,model,code)
+
+		### 文件不存在
+		if not (os.path.exists(folder_path)):
+			return ""
+
+		file_name=_get_recent_file_name(folder_path)
+
+		apk_infos=list(read_file_string(os.path.join(folder_path,file_name)).split("\n"))
+
+
+		print(apk_infos)
+		return read_file_string(os.path.join(folder_path,file_name))
+
+
+		
+	except Exception as e:
+
+		traceback.print_exc()
+	else:
+		pass
+	finally:
+		pass
+
+
 	pass
 
 """
@@ -52,6 +85,8 @@ def get_apk_infos(json):
 
 """
 def _update_record_file(json_string):
+
+
 	try:
 
 	   	### 进行json解析
@@ -69,8 +104,6 @@ def _update_record_file(json_string):
 	   	file_name=_get_recent_file_name(folder_path)
 	   	### 最新需要写入的信息
 	   	write_info=format_time2()
-	   	### 是否需要新建文件
-	   	create_new_file=False
 	   	### 如果文件存在 需要通过某种规则更新文件信息
 	   	if(os.path.exists(os.path.join(folder_path,file_name))):
 	   		
@@ -98,7 +131,6 @@ def _update_record_file(json_string):
 	   					###发现有一个版本code不一致 则需要将信息写入新的文件中去	
 	   					else:
 	   						write_info=write_info+"\n"+app_info["packageName"]+" "+app_info["versionName"]+" "+app_info["versionCode"]+" "+app_info["channel"]+" "+app_info["md5"]+" "+app_info["length"]
-	   						create_new_file=True
 	   						file_name=(str)(len(os.listdir(folder_path))+1)+".txt"
 	   						pass
 	   				###包名不一致 则进行i++ 如果i最终值和file_infos.length一致 说明该app_info 在文件中不存在 需要进行添加	
@@ -134,22 +166,14 @@ def _update_record_file(json_string):
 
 	   	### 如果文件不存在			
 	   	else:
-	   			### 获取相关apk信息
+	   		### 获取相关apk信息
 	   		for app_info in iter(app_infos):
 	   			write_info=write_info+"\n"+app_info["packageName"]+" "+app_info["versionName"]+" "+app_info["versionCode"]+" "+app_info["channel"]+" "+app_info["md5"]+" "+app_info["length"]
 	   			pass
 	   		pass	
 
-	   	if(create_new_file):
-	   		write_file_string(os.path.join(root,model,code),file_name,write_info,False)
-	   		pass
-	   	else:
-	   		write_file_string(os.path.join(root,model,code),file_name,write_info,False)
-	   		pass	
-
-
-
-	   	
+	   	### 判断是否需要	
+	   	write_file_string(os.path.join(root,model,code),file_name,write_info,False)
 	
 	except Exception as e:
 		traceback.print_exc()
@@ -178,14 +202,4 @@ def _get_recent_file_name(folder_path):
 
 
 	
-
-
-"""
-
-需要记录的文件是否存在
-
-"""
-def _is_record_file_exist(model,os):
-
-	pass			
 
