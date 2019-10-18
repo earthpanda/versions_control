@@ -53,12 +53,12 @@ print(root)
 
 
 
-s={"model": "F1",
-	"code": "20800",
+s={"model": "B1",
+	"code": "20801",
 	"content": [{
-		"versionName": "f1_20800",
-		"versionCode": "208000",
-		"packageName": "com.dangbei.12",
+		"versionName": "f1_20802",
+		"versionCode": "20803",
+		"packageName": "com.dangbei.0",
 		"md5": "xxxx",
 		"length": "11112",
 		"channel": "DBOS_F1"},{

@@ -28,7 +28,30 @@ root=os.path.join(os.getcwd(),"file")
 
 """
 def update_apk_infos(json_string):
+	### 将记录更新到文件中
+	_update_record_file(json_string)
+	pass
 
+"""
+
+得到最近一次的apk信息
+
+{
+	"model": "F1",
+	"code": "20800"
+}
+
+"""
+def get_apk_infos(json):
+	print("get_apk_infos")
+	pass
+
+"""
+
+更新需要记录的文件
+
+"""
+def _update_record_file(json_string):
 	try:
 
 	   	### 进行json解析
@@ -42,15 +65,14 @@ def update_apk_infos(json_string):
 
 	   	### 进行文件夹和文件名称的定义
 	   	folder_path=os.path.join(root,model,code)
-	   	file_name="1.txt"
+
+	   	file_name=_get_recent_file_name(folder_path)
 	   	### 最新需要写入的信息
 	   	write_info=format_time2()
 	   	### 是否需要新建文件
 	   	create_new_file=False
 	   	### 如果文件存在 需要通过某种规则更新文件信息
 	   	if(os.path.exists(os.path.join(folder_path,file_name))):
-
-	   		
 	   		
 	   		### 读取文件中存储的内容 过滤更新时间的信息 将
 	   		s=read_file_string(os.path.join(folder_path,file_name))
@@ -77,7 +99,7 @@ def update_apk_infos(json_string):
 	   					else:
 	   						write_info=write_info+"\n"+app_info["packageName"]+" "+app_info["versionName"]+" "+app_info["versionCode"]+" "+app_info["channel"]+" "+app_info["md5"]+" "+app_info["length"]
 	   						create_new_file=True
-	   						file_name="2.txt"
+	   						file_name=(str)(len(os.listdir(folder_path))+1)+".txt"
 	   						pass
 	   				###包名不一致 则进行i++ 如果i最终值和file_infos.length一致 说明该app_info 在文件中不存在 需要进行添加	
 	   				else:	
@@ -112,23 +134,17 @@ def update_apk_infos(json_string):
 
 	   	### 如果文件不存在			
 	   	else:
-
 	   			### 获取相关apk信息
 	   		for app_info in iter(app_infos):
-
 	   			write_info=write_info+"\n"+app_info["packageName"]+" "+app_info["versionName"]+" "+app_info["versionCode"]+" "+app_info["channel"]+" "+app_info["md5"]+" "+app_info["length"]
-
 	   			pass
 	   		pass	
 
 	   	if(create_new_file):
-
 	   		write_file_string(os.path.join(root,model,code),file_name,write_info,False)
 	   		pass
 	   	else:
-
 	   		write_file_string(os.path.join(root,model,code),file_name,write_info,False)
-
 	   		pass	
 
 
@@ -143,30 +159,22 @@ def update_apk_infos(json_string):
 		pass
 	pass
 
-"""
 
-得到最近一次的apk信息
-
-{
-	"model": "F1",
-	"code": "20800"
-}
 
 """
-def get_apk_infos(json):
-	print("get_apk_infos")
-	pass
-
+得到最新的一个文件的名称
 """
+def _get_recent_file_name(folder_path):
 
-创建需要记录的文件
-
-"""
-def _update_record_file():
-
-	pass	
-
-
+	### 如果文件夹存在
+	if(os.path.exists(folder_path)):
+		length=len(os.listdir(folder_path))
+		if(length==0):
+			return "1.txt"
+		else:
+			return str(length)+".txt"	
+		
+	return "1.txt"
 
 
 	
