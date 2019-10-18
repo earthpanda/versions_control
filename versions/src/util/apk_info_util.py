@@ -11,6 +11,7 @@ def get_farthest_file(file_dir):
     return file_path
 
 
+# 创建文件
 def mkdir(path):
     # 引入模块
     import os
@@ -27,14 +28,13 @@ def mkdir(path):
         # 如果不存在则创建目录
         # 创建目录操作函数
         os.makedirs(path)
-        print(path + ' 创建成功')
         return True
     else:
         # 如果目录存在则不创建，并提示目录已存在
-        print(path + ' 目录已存在')
         return False
 
 
+# 获取当前文件路径下所有的文件（不包含文件夹）
 def file_list(file_dir):
     # root 当前目录路径
     # dirs 当前路径下所有子目录

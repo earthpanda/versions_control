@@ -1,9 +1,18 @@
 import os
-import time
+from src.util.time import *
 
 
 class ApkEntity:
-
+    """
+    初始化apk实体类
+    device_type：设备型号
+    channel : 渠道
+    package_name : 包名
+    version_name : 版本名
+    version_code : 版本号
+    file_size : 文件大小
+    md5 : 文件md5值
+    """
     def __init__(self, device_type, channel, package_name, version_name, version_code, file_size, md5):
         self.device_type = device_type
         self.channel = channel
@@ -19,10 +28,10 @@ class ApkEntity:
 
     # 返回文件内容
     def file_content(self):
-        return self.md5 + \
-               self.file_size + \
-               self.version_name + \
-               time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        return "上传时间：" + format_time2() + "\n" + \
+               "MD5：" + self.md5 + "\n" + \
+               "apk大小：" + self.file_size + "\n" + \
+               "版本名称：" + self.version_name
 
     def to_string(self):
         print("apkEntity =", self.device_type, self.channel, self.package_name, self.version_name,

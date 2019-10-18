@@ -1,11 +1,10 @@
-import os, traceback
+import os
+import traceback
+import shutil
 
 ### 默认使用编码格式为utf-8
 
 defaultEncoding = "utf-8"
-
-
-
 
 """
 
@@ -17,6 +16,8 @@ append 是否追加 true 在原文件后面进行内容的书写
                false 清空内容后 从开头进行文件的书写
 
 """
+
+
 def write_file_string(folder_path, file_name, content, append):
     mode = "w"
     file = None
@@ -43,8 +44,10 @@ def write_file_string(folder_path, file_name, content, append):
     except Exception as e:
         traceback.print_exc()
 
+
     else:
         pass
+
 
     finally:
         if (None != file):
@@ -52,7 +55,6 @@ def write_file_string(folder_path, file_name, content, append):
         pass
 
     pass
-
 
 
 """
@@ -63,6 +65,8 @@ file_path 文件路径
 返回内容的格式为String
 
 """
+
+
 def read_file_string(file_path):
     mode = "r"
     file = None
@@ -78,6 +82,7 @@ def read_file_string(file_path):
         return content
 
 
+
     except Exception as e:
         traceback.print_exc()
 
@@ -90,7 +95,6 @@ def read_file_string(file_path):
     pass
 
 
-
 """
 重命名一个文件 返回重命名后的绝对路径
 如果文件不存在 则不做任何处理 给予相应的提示
@@ -100,13 +104,47 @@ file_rename 重命名的文件名称
 
 """
 
-def rename_file(folder_path,file_name,file_rename):
+
+def rename_file(folder_path, file_name, file_rename):
+    try:
+        os.rename(os.path.join(folder_path, file_name), os.path.join(folder_path, file_rename))
+        return os.path.join(folder_path, file_rename)
+    except Exception as e:
+
+        traceback.print_exc()
+    else:
+        pass
+    finally:
+        pass
+
+
+
+
+"""
+
+ 如果文件不存在 则不做任何处理 给予相应的提示
+ path 文件或者文件夹的路径 
+ is_folder 是否是文件夹
+ 如果删除成功 返回 true 否则 返回false
+ 注意os.removedirs 用于删除空目录 如果有文件则不删除
+
+"""
+def delete_file(path,is_folder):
+
+
 
 	try:
-		os.rename(os.path.join(folder_path,file_name),os.path.join(folder_path,file_rename))
-		return os.path.join(folder_path,file_rename)
-	except Exception as e:
 
+		if(is_folder):
+
+			shutil.rmtree(path)
+
+		else:
+			os.remove(path)
+
+		return True
+		
+	except Exception as e:
 		traceback.print_exc()
 	else:
 		pass
@@ -114,21 +152,110 @@ def rename_file(folder_path,file_name,file_rename):
 		pass
 
 
+"""
 
-### 删除文件
-### 以当前.py文件的路径作为对照路径作为参考
-### 如果文件不存在 则不做任何处理 给予相应的提示
-### relative_path 相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
-### 如果删除成功 返回 true 否则 返回false
-def delete_file(relative_path):
+copy文件
+进行文件copy 如果没有原文件 则 不做任何处理 给予相应的提示
+path_src 原路径 
+path_dst 目标路径
+如果copy成功 返回 true 否则 返回false
+
+"""
+
+def copy_file(path_src, path_dst):
+
+	try:
+
+		shutil.copyfile(path_src,path_dst)
+		pass
+
+	except Exception as e:
+		
+		traceback.print_exc()
+
+	else:
+		pass
+	finally:
+		pass
+
+
+"""
+    删除某路径当前目录下的某种文件
+
+    older_path 文件夹路径()
+    suffix 文件格式后缀 ".txt" ".apk"...
+    如果文件夹不存在 或者 不是文件夹则不处理
+"""
+def delete_feature_file(folder_path,suffix):
+
+
+    if not (os.path.exists(folder_path)):
+        print(folder_path +" is not exits")
+        return
+    
+    if not (os.path.isdir(folder_path)):
+        print(folder_path+" is not a folder")
+        return
+    
+    try:
+        # 获取当前目录下的所有文件
+        list=os.listdir(folder_path)
+
+        for i in range(len(list)):
+
+            is_detele_file=str(list[i]).endswith(suffix)
+
+            if(is_detele_file):
+                delete_file(os.path.join(folder_path,list[i]),False)
+                print(os.path.join(folder_path,list[i])+" deleted")
+            pass
+
+        pass
+
+    except Exception as e:
+        traceback.print_exc()       
+    else:
+        pass
+    finally:
+        pass    
+
     pass
 
+"""
+    删除某个文件夹下的所有文件
+    如果不是文件夹 或者 文件不存在则不处理
 
-### copy文件
-### 以当前.py文件的路径作为对照路径作为参考
-### 进行文件copy 如果没有原文件 则 不做任何处理 给予相应的提示
-### relative_path_src 原相对路径 如 os.sep+"test.txt" 代表 "\test.txt"
-### relative_path_dst 需要copy的文件地址 如 os.sep+"test.txt" 代表 "\test.txt"
-### 如果copy成功 返回 true 否则 返回false
-def copy_file(relative_path_src, relative_path_dst):
-    pass
+    folder_path 文件夹路径
+"""
+def delete_all_in_folder(folder_path):
+
+    if not (os.path.exists(folder_path)):
+        print(folder_path +" is not exits")
+        return
+    
+    if not (os.path.isdir(folder_path)):
+        print(folder_path+" is not a folder")
+        return
+
+    try:
+        # 获取当前目录下的所有文件
+        list=os.listdir(folder_path)
+
+        for i in range(len(list)):
+            path=os.path.join(folder_path,list[i])
+            delete_file(path,os.path.isdir(path))
+          
+        pass
+
+    except Exception as e:
+        traceback.print_exc()       
+    else:
+        pass
+    finally:
+        pass    
+
+    pass    
+
+
+    pass    
+    
