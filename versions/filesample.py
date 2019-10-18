@@ -1,14 +1,17 @@
 import os
+import json
+import src.util.time
 from src.util.filehelper import write_file_string, read_file_string, rename_file, delete_file, copy_file
 from src.midground.file.midfile import delete_apks, delete_all
 from src.entity.ApkEntity import *
 from src.util.apk_info_writer import *
 from src.apk.apk_info import *
-import src.util.time
+from src.midground.file.midapk import update_apk_infos,get_apk_infos
 
-s = os.path.join(os.getcwd(), "file", "one")
 
-print(s)
+root = os.path.join(os.getcwd(), "file")
+
+print(root)
 
 # write_file_string(os.path.join(s,"one","two","three"), "test.txt", "this is a test in three ", False)
 # write_file_string(os.path.join(s,"test"), "test.txt", "this is a test", False)
@@ -25,8 +28,8 @@ print(s)
 # copy_file(os.path.join(s,"one","two","three","test.txt"),os.path.join(s,"one","two","three","test1.txt"))
 
 
-delete_apks(s)
-delete_all(s)
+# delete_apks(s)
+# delete_all(s)
 
 
 # def print_log(log):
@@ -46,3 +49,36 @@ delete_all(s)
 #
 # if __name__ == '__main__':
 #     test()
+
+
+
+
+s={"model": "F1",
+	"code": "20800",
+	"content": [{
+		"versionName": "f1_20800",
+		"versionCode": "208000",
+		"packageName": "com.dangbei.12",
+		"md5": "xxxx",
+		"length": "11112",
+		"channel": "DBOS_F1"},{
+		"versionName": "f1_20800",
+		"versionCode": "20800",
+		"packageName": "com.dangbei.2",
+		"md5": "xxxx",
+		"length": "11111",
+		"channel": "DBOS_F1"}]
+}
+
+
+p=json.dumps(s)
+print(p)
+data=json.loads(p)
+
+
+
+update_apk_infos(p)
+
+
+
+get_apk_infos(s)

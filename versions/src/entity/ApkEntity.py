@@ -5,7 +5,6 @@ from src.util.time import *
 class ApkEntity:
     """
     初始化apk实体类
-    device_type：设备型号
     channel : 渠道
     package_name : 包名
     version_name : 版本名
@@ -13,8 +12,7 @@ class ApkEntity:
     file_size : 文件大小
     md5 : 文件md5值
     """
-    def __init__(self, device_type, channel, package_name, version_name, version_code, file_size, md5):
-        self.device_type = device_type
+    def __init__(self, package_name, version_name, version_code, channel, md5, file_size):
         self.channel = channel
         self.package_name = package_name
         self.version_name = version_name
@@ -24,7 +22,7 @@ class ApkEntity:
 
     # 根据信息拼接成路径
     def get_path(self):
-        return self.device_type + os.sep + self.channel + os.sep + self.version_code + os.sep + self.package_name
+        return self.channel + os.sep + self.version_code + os.sep + self.package_name
 
     # 返回文件内容
     def file_content(self):
@@ -34,5 +32,5 @@ class ApkEntity:
                "版本名称：" + self.version_name
 
     def to_string(self):
-        print("apkEntity =", self.device_type, self.channel, self.package_name, self.version_name,
+        print("apkEntity =", self.channel, self.package_name, self.version_name,
               self.version_code, self.file_size, self.md5)
