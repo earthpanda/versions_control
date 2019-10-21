@@ -60,11 +60,15 @@ def get_apk_infos(json_string):
 
 		file_name=_get_recent_file_name(folder_path)
 
-		apk_infos=list(read_file_string(os.path.join(folder_path,file_name)).split("\n"))
+		### 列表中第一个字符是更新时间 这里将它剔除
+		apk_infos=list(read_file_string(os.path.join(folder_path,file_name)).split("\n"))[1:]
+		
 
+		dict={}
+		dict["content"]=apk_infos
 
-		print(apk_infos)
-		return read_file_string(os.path.join(folder_path,file_name))
+		
+		return read_file_string(os.path.join(folder_path,file_name))[1:]
 
 
 		
@@ -172,7 +176,7 @@ def _update_record_file(json_string):
 	   			pass
 	   		pass	
 
-	   	### 判断是否需要	
+	   	
 	   	write_file_string(os.path.join(root,model,code),file_name,write_info,False)
 	
 	except Exception as e:
