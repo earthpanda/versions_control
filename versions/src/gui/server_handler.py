@@ -11,6 +11,7 @@ class ServerClient:
         self.remote_code_path = "/home/user/workspace/work/mstar938vfc/code"
         self.remote_path_parent = "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
         self.local_path_parent = "/Users/nemoli/Downloads/remoteApks"
+        self.sftp_client = None
 
     def login(self, callback):
         # 创建一个ssh对象
@@ -30,9 +31,9 @@ class ServerClient:
 
     def download_apks(self, callback):
         # 4. 打开sftp连接
-        sftp_client = self.client.open_sftp()
+        self.sftp_client = self.client.open_sftp()
 
-        remote_apks = sftp_client.listdir(self.remote_path_parent)
+        remote_apks = self.sftp_client.listdir(self.remote_path_parent)
         log = ""
         for apk in remote_apks:
             remote_path = self.remote_path_parent + "/" + apk
@@ -41,10 +42,19 @@ class ServerClient:
             callback("下载文件:" + local_path)
             # print(remote_path)
 
-    def getBranch(self, callback):
+    def push_apks(self, apkInfos, callback):
+        if not self.sftp_client:
+            self.sftp_client = self.client.open_sftp()
+        for apkInfo in apkInfos:
+            local_path = apkInfo["localPath"]
+            remote_path = apkInfo["remote_full_path"]
+            self.sftp_client.put(local_path, remote_path)
+            callback("本地地址:{}--远程地址:{}".format(local_path, remote_path))
+
+    def getBranch(self, callback, listBranchs):
         # 4.执行操作
         # 标准输入，标准输出，标准错误输出。
-        cmd = 'cd {}; pwd; git branch'.format(self.remote_code_path)
+        cmd = 'cd {}; git branch'.format(self.remote_code_path)
         stdin, stdout, stderr = self.client.exec_command(cmd)
         # Execute a command on the SSH server.  A new `.Channel` is opened and
         # the requested command is executed.  The command's input and output
@@ -54,6 +64,16 @@ class ServerClient:
         # 5.获取命令的执行结果
         # 使结果具有可读性
         res = stdout.read().decode('utf-8')
+        print(res)
+        branch_line = re.search('\* (\w+)', res)
+        branch = branch_line.group(1)
+        callback("当前服务端的分支为:" + branch)
+        listBranchs(res.split("\n"))
+
+    def run_command(self, command, callback):
+        stdin, stdout, stderr = self.client.exec_command(command)
+        res = stdout.read().decode('utf-8')
+        print(res)
         callback(res)
 
     def logout(self, callback):
@@ -69,6 +89,9 @@ if __name__ == "__main__":
     client = ServerClient()
     # def log(result):
     # print(result)
-    client.login(client.callback)
-    client.download_apks(client.callback)
-    client.getBranch(client.callback)
+    # client.login(client.callback)
+    # client.download_apks(client.callback)
+    # client.getBranch(client.callback, client.callback)
+    # client.run_command("cd /home/user/workspace/work/mstar938vfc/code; pwd",
+    # client.callback)
+    # client.run_command('git checkout develop', client.callback)

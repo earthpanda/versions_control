@@ -8,10 +8,9 @@ import re
 
 
 class ApkParser:
-    packagename = ''
-    versionCode = ''
-    versionName = ''
-    apkInfo = {'packagename': '', 'versionCode': '', 'versionName': ''}
+
+    apkInfo = {'packagename': '', 'versionCode': '', 'versionName': '',
+               "localPath": ''}
 
     def getAppBaseInfo(self, param_apk_path):
         get_info_command = "aapt dump badging %s" % (param_apk_path)
@@ -26,11 +25,12 @@ class ApkParser:
         versionCode = match.group(2)
         versionName = match.group(3)
         # print(u" 包名：%s \n 版本号：%s \n 版本名称：%s " % (packagename,
-                                                 # versionCode,
-                                                 # versionName))
-        ApkParser.apkInfo['packagename'] = packagename
-        ApkParser.apkInfo['versionCode'] = versionCode
-        ApkParser.apkInfo['versionName'] = versionName
+        # versionCode,
+        # versionName))
+        self.apkInfo['packagename'] = packagename
+        self.apkInfo['versionCode'] = versionCode
+        self.apkInfo['versionName'] = versionName
+        self.apkInfo['localPath'] = param_apk_path
 
 
 if __name__ == '__main__':
