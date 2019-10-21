@@ -6,26 +6,28 @@
 """
 apk上传固件小工具
 """
-import apk
+
 import sys
 import random
-from PyQt5.QtGui import QFont, QColor, QTextCursor
-from PyQt5.QtCore import Qt
-from PyQt5 import QtWidgets
 import re
 import os
 import json
-
-from server_handler import ServerClient
-import platform_data
-from apk import ApkParser
 import shutil
 
-from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
-                             QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
-                             QHeaderView, QLabel, QFrame, QTableWidget,
-                             QGridLayout, QRadioButton, QLineEdit, QTextEdit,
-                             QFileDialog, QButtonGroup, QComboBox)
+from PyQt5.QtGui import QFont, QColor, QTextCursor
+from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets
+
+
+from src.midground.file.midserver import ServerClient
+from src.midground.config.platform_data import *
+from src.midground.file.midapk import *
+from PyQt5.QtWidgets import *
+# from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
+#                              QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
+#                              QHeaderView, QLabel, QFrame, QTableWidget,
+#                              QGridLayout, QRadioButton, QLineEdit, QTextEdit,
+#                              QFileDialog, QButtonGroup, QComboBox)
 
 
 class Main(QWidget):
@@ -239,34 +241,34 @@ class DragTable(QTableWidget):
         i = 0
         for url in self.urls:
             url_use = url.toString().replace("file:///", "/")
-            apkParser = apk.ApkParser()
+            apkParser = versions.src.gui.apk.ApkParser()
             apkParser.getAppBaseInfo(url_use)
-            print(apk.ApkParser.apkInfo)
-            apkInfo = apk.ApkParser.apkInfo
+            print(versions.src.gui.apk.ApkParser.apkInfo)
+            apkInfo = versions.src.gui.apk.ApkParser.apkInfo
             packagename = apkInfo["packagename"]
             self.setItem(i, 0, QTableWidgetItem(
-                apk.ApkParser.apkInfo["packagename"]))
+                versions.src.gui.apk.ApkParser.apkInfo["packagename"]))
             self.setItem(i, 1, QTableWidgetItem(
-                apk.ApkParser.apkInfo["versionCode"]))
+                versions.src.gui.apk.ApkParser.apkInfo["versionCode"]))
             self.setItem(i, 2, QTableWidgetItem(
-                apk.ApkParser.apkInfo["versionName"]))
+                versions.src.gui.apk.ApkParser.apkInfo["versionName"]))
             # print("当前的平台为:" + self.current_platform)
             # print("apk的本地路径为---" + apk.ApkParser.apkInfo["localPath"])
-            name_map = platform_data.final_name_platform[self.current_platform]
+            name_map = versions.src.gui.platform_data.final_name_platform[self.current_platform]
             # print(name_map)
             # if packagename in platform_data.pre_install_apks:
             self.setItem(i, 3,
                          QTableWidgetItem(name_map[packagename]))
-            apk_path = platform_data.remote_system_apk_path[self.current_platform]
+            apk_path = versions.src.gui.platform_data.remote_system_apk_path[self.current_platform]
             apkInfo["remote_full_path"] = (apk_path + "/" +
                                            name_map[packagename] + ".apk")
 
             simple_path = apk_path.replace(
-                platform_data.remote_work_parent_dir, "${work}")
+                versions.src.gui.platform_data.remote_work_parent_dir, "${work}")
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
             apkInfo["rename"] = (
-                platform_data.final_name_platform[self.current_platform][packagename])
+                versions.src.gui.platform_data.final_name_platform[self.current_platform][packagename])
             content.append(apkInfo)
             i += 1
         self.main_data["content"] = content
