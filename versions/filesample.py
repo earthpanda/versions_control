@@ -11,10 +11,6 @@ from src.apk.apk_info import *
 from src.midground.file.midapk import update_apk_infos,get_apk_infos
 
 
-root = os.path.join(os.getcwd(), "file")
-
-print(root)
-
 # write_file_string(os.path.join(s,"one","two","three"), "test.txt", "this is a test in three ", False)
 # write_file_string(os.path.join(s,"test"), "test.txt", "this is a test", False)
 
@@ -58,8 +54,8 @@ print(root)
 s={"model": "F1",
 	"code": "20801",
 	"content": [{
-		"versionName": "f1_20802",
-		"versionCode": "20803",
+		"versionName": "f1_20800",
+		"versionCode": "20806",
 		"packageName": "com.dangbei.0",
 		"md5": "xxxx",
 		"length": "11112",
@@ -91,12 +87,12 @@ print(get_apk_infos(json.dumps(test)))
 
 
  
-app = QtWidgets.QApplication(sys.argv)
-widget = QtWidgets.QWidget()
-widget.resize(360, 360)
-widget.setWindowTitle("hello, pyqt5")
-widget.show()
-sys.exit(app.exec())
+# app = QtWidgets.QApplication(sys.argv)
+# widget = QtWidgets.QWidget()
+# widget.resize(360, 360)
+# widget.setWindowTitle("hello, pyqt5")
+# widget.show()
+# sys.exit(app.exec())
 
 
 

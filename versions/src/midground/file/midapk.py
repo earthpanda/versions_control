@@ -3,13 +3,15 @@
 import traceback
 import os
 import json
+import git
 
 from ...util.filehelper import write_file_string,read_file_string
 from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
 
 
-root=os.path.join(os.getcwd(),"file")
+## 需项目工程配置和VersionsRecord 项目同目录 
+root=os.path.join(os.getcwd(),"..","..","VersionsRecord","file")
 
 """
 更新apk的信息
@@ -33,8 +35,10 @@ json_string
 
 """
 def update_apk_infos(json_string):
+	_pull_file_from_git()
 	### 将记录更新到文件中
 	if(_update_record_file(json_string)):
+		_push_file_to_git()
 		return True
 	pass
 
@@ -135,11 +139,13 @@ def get_apk_infos(json_string):
 """
 def _update_record_file(json_string):
 
+
 	try:
+
 
 	   	### 进行json解析
 	   	data_in=json.loads(json_string)
-
+		
 	   	### 获取相关的model和code
 	   	model=data_in["model"]
 	   	code=data_in["code"]
@@ -222,6 +228,7 @@ def _update_record_file(json_string):
 
 	   	
 	   	write_file_string(os.path.join(root,model,code),file_name,write_info,False)
+	   	print("_update_record_file")
 
 	   	return True
 	
@@ -236,6 +243,33 @@ def _update_record_file(json_string):
 	pass
 
 
+"""
+上传文件到git仓库
+
+
+"""
+def _push_file_to_git():
+	folder_path=os.path.abspath(os.path.join(root,".."))
+	repo = git.Repo.init(path=folder_path)
+	repo.git.add(".")
+	repo.git.commit( m="update_file "+str(format_time2()))
+	repo.git.push()
+
+	### 有可能会有merge的问题
+	print (repo.git.status())
+	pass
+
+"""
+拉文件到本地
+"""	
+def _pull_file_from_git():
+
+	print("_pull_file_from_git")
+	folder_path=os.path.abspath(os.path.join(root,".."))
+	repo = git.Repo.init(path=folder_path)
+	repo.git.fetch()
+	repo.git.pull()
+	pass	
 
 """
 得到最新的一个文件的名称
