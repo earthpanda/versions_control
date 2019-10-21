@@ -1,6 +1,8 @@
 import os
 import json
 import src.util.time
+import sys
+from PyQt5 import QtWidgets
 from src.util.filehelper import write_file_string, read_file_string, rename_file, delete_file, copy_file
 from src.midground.file.midfile import delete_apks, delete_all
 from src.entity.ApkEntity import *
@@ -76,13 +78,25 @@ data=json.loads(p)
 
 
 
-update_apk_infos(p)
+print(update_apk_infos(p))
 
 test={"model": "C1",
 	"code": "20801"
 }
 
 
-get_apk_infos(json.dumps(test))
+print(get_apk_infos(json.dumps(test)))
+
+
+
+
+ 
+app = QtWidgets.QApplication(sys.argv)
+widget = QtWidgets.QWidget()
+widget.resize(360, 360)
+widget.setWindowTitle("hello, pyqt5")
+widget.show()
+sys.exit(app.exec())
+
 
 
