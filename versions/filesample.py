@@ -76,13 +76,13 @@ data=json.loads(p)
 
 
 
-update_apk_infos(p)
+print(update_apk_infos(p))
 
 test={"model": "C1",
 	"code": "20801"
 }
 
 
-get_apk_infos(json.dumps(test))
+print(get_apk_infos(json.dumps(test)))
 
 

@@ -14,6 +14,8 @@ root=os.path.join(os.getcwd(),"file")
 """
 更新apk的信息
 
+json_string
+
 {
 	"model": "F1",
 	"code": "20800",
@@ -26,10 +28,14 @@ root=os.path.join(os.getcwd(),"file")
 		"channel": "DBOS_F1"}]
 }
 
+
+如果存储成功 返回True 否则返回 None
+
 """
 def update_apk_infos(json_string):
 	### 将记录更新到文件中
-	_update_record_file(json_string)
+	if(_update_record_file(json_string)):
+		return True
 	pass
 
 """
@@ -42,7 +48,21 @@ def update_apk_infos(json_string):
 }
 
 
-如果文件不存在 则返回这样的信息
+如果文件不存在 则返回""
+如果存在则返回
+
+{"model": "F1",
+	"code": "20801",
+	"content": [{
+		"versionName": "f1_20802",
+		"versionCode": "20803",
+		"packageName": "com.dangbei.0",
+		"md5": "xxxx",
+		"length": "11112",
+		"channel": "DBOS_F1"}]
+}
+
+这样的json格式
 
 """
 def get_apk_infos(json_string):
@@ -60,15 +80,40 @@ def get_apk_infos(json_string):
 
 		file_name=_get_recent_file_name(folder_path)
 
-		### 列表中第一个字符是更新时间 这里将它剔除
+		### 列表中第一个字符是更新时间 这里将它剔除 从而获取到相关的文件信息展示
+		### packageName versionName versionCode channel md5 length
 		apk_infos=list(read_file_string(os.path.join(folder_path,file_name)).split("\n"))[1:]
+
+
+		### 声明列表
+		items=[]
+		
+		for apk_info in iter(apk_infos):
+			dict={}
+
+			apk_list=list(apk_info.split(" "))
+			dict["packageName"]=apk_list[0]
+			dict["versionName"]=apk_list[1]
+			dict["versionCode"]=apk_list[2]
+			dict["channel"]=apk_list[3]
+			dict["md5"]=apk_list[4]
+			dict["length"]=apk_list[5]
+			
+			### 在列表中添加关于相应的字典
+			items.append(dict)
+
+			pass
+
+		
 		
 
+		### 字典转json
 		dict={}
-		dict["content"]=apk_infos
+		dict["model"]=model
+		dict["code"]=code
+		dict["content"]=items
 
-		
-		return read_file_string(os.path.join(folder_path,file_name))[1:]
+		return json.dumps(dict)
 
 
 		
@@ -89,7 +134,6 @@ def get_apk_infos(json_string):
 
 """
 def _update_record_file(json_string):
-
 
 	try:
 
@@ -178,9 +222,13 @@ def _update_record_file(json_string):
 
 	   	
 	   	write_file_string(os.path.join(root,model,code),file_name,write_info,False)
+
+	   	return True
+	
 	
 	except Exception as e:
 		traceback.print_exc()
+
 	else:
 		pass
 	finally:
