@@ -63,7 +63,7 @@ s={"model": "F1",
 		"versionName": "f1_20800",
 		"versionCode": "20800",
 		"packageName": "com.dangbei.2",
-		"md5": "xxxx",
+		"md5": "xxxxxxxxxx",
 		"length": "11111",
 		"channel": "DBOS_F1"}]
 }
