@@ -70,6 +70,13 @@ class Main(QWidget):
             platform_radio.toggled.connect(self.change_platform)
             platform_layout.addWidget(platform_radio, *position)
 
+        # 手动输入版本号信息区域
+        label_note_version = QLabel("请输入版本号:")
+        l_edit_version = QLineEdit()
+        sizePolicy = l_edit_version.sizePolicy()
+        sizePolicy.setHorizontalPolicy(QSizePolicy.Preferred)
+        l_edit_version.setSizePolicy(sizePolicy)
+
         apk_down_path_label = QLabel("服务端apk下载文件目录")
         self.l_edit_down_path = QLineEdit()
         self.l_edit_down_path.setText(os.path.abspath('.'))
@@ -120,6 +127,8 @@ class Main(QWidget):
 
         # 右边布局添加控件
         v_right_layout.addLayout(platform_layout)
+        v_right_layout.addWidget(label_note_version)
+        v_right_layout.addWidget(l_edit_version)
         v_right_layout.addWidget(btn_select_down_path)
         v_right_layout.addWidget(btn_select_file_path)
         v_right_layout.addWidget(btn_action_down)
