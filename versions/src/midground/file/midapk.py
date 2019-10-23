@@ -4,6 +4,7 @@ import traceback
 import os
 import json
 import git
+import re
 
 from ...util.filehelper import write_file_string,read_file_string
 from ...util.time import format_time2
