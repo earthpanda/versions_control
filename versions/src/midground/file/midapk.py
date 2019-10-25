@@ -6,13 +6,15 @@ import json
 import git
 import re
 
+
 from ...util.filehelper import write_file_string, read_file_string
 from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
-
+from ...config.config import *
 
 # 需项目工程配置和VersionsRecord 项目同目录
-root = os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
+root = upload_folder_path
+
 
 """
 更新apk的信息
@@ -143,7 +145,6 @@ def get_apk_infos(json_string):
 def _update_record_file(json_string):
 
     try:
-
         # 进行json解析
         data_in = json.loads(json_string)
 
@@ -151,6 +152,8 @@ def _update_record_file(json_string):
         model = data_in["model"]
         code = data_in["code"]
         app_infos = data_in["content"]
+
+
 
         # 进行文件夹和文件名称的定义
         folder_path = os.path.join(root, model, code)
@@ -261,15 +264,25 @@ def _update_record_file(json_string):
 
 
 def _push_file_to_git():
-    folder_path = os.path.abspath(os.path.join(root, ".."))
-    repo = git.Repo.init(path=folder_path)
-    repo.git.add(".")
-    repo.git.commit(m="update_file "+str(format_time2()))
-    repo.git.push()
 
-    # 有可能会有merge的问题
-    print(repo.git.status())
-    pass
+	try:
+
+		folder_path = os.path.abspath(os.path.join(root, ".."))
+		repo = git.Repo.init(path=folder_path)
+		repo.git.add(".")
+		repo.git.commit(m="update_file "+str(format_time2()))
+		repo.git.push()
+		print(repo.git.status())
+		pass
+
+	except Exception as e:
+		traceback.print_exc()
+	else:
+		pass
+	finally:
+		pass
+   
+
 
 
 """
@@ -279,12 +292,19 @@ def _push_file_to_git():
 
 def _pull_file_from_git():
 
-    print("_pull_file_from_git")
-    folder_path = os.path.abspath(os.path.join(root, ".."))
-    repo = git.Repo.init(path=folder_path)
-    repo.git.fetch()
-    repo.git.pull()
-    pass
+	try:
+		print("_pull_file_from_git")
+		folder_path = os.path.abspath(os.path.join(root, ".."))
+		repo = git.Repo.init(path=folder_path)
+		repo.git.fetch()
+		repo.git.pull()
+
+		pass
+	except Exception as e:
+		traceback.print_exc()
+	else:
+		pass
+
 
 
 """

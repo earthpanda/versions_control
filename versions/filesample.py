@@ -89,6 +89,7 @@ def main():
 		"channel": "DBOS_F1"}]
 	}
 
+	print(os.getcwd())
 
 	p=json.dumps(s)
 	data=json.loads(p)
@@ -97,7 +98,7 @@ def main():
 	update_apk_infos(p)
 	print(root)
 
-	# os.system('cmd /k start ')
+	os.system('cmd /k start ')
 
 	pass
 
