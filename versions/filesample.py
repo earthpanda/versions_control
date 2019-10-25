@@ -52,36 +52,6 @@ from src.midground.file.midapk import update_apk_infos,get_apk_infos
 
 
 
-s={"model": "F1",
-	"code": "20801",
-	"content": [{
-		"versionName": "f1_20800",
-		"versionCode": "20806",
-		"packageName": "com.dangbei.0",
-		"md5": "xxxx",
-		"length": "11112",
-		"channel": "DBOS_F1"},{
-		"versionName": "f1_20800",
-		"versionCode": "20800",
-		"packageName": "com.dangbei.2",
-		"md5": "xxxxxxxxxx",
-		"length": "11111",
-		"channel": "DBOS_F1"}]
-}
-
-
-p=json.dumps(s)
-data=json.loads(p)
-
-
-
-
-
-root=os.getcwd();
-
-print(root)
-
-os.system('cmd /k start ')
 
 # print(update_apk_infos(p))
 
@@ -99,5 +69,40 @@ os.system('cmd /k start ')
 # widget.show()
 # sys.exit(app.exec())
 
+
+def main():
+
+	s={"model": "F1",
+	"code": "20801",
+	"content": [{
+		"versionName": "f1_20800",
+		"versionCode": "20806",
+		"packageName": "com.dangbei.0",
+		"md5": "xxxx",
+		"length": "11112",
+		"channel": "DBOS_F1"},{
+		"versionName": "f1_20800",
+		"versionCode": "20800",
+		"packageName": "com.dangbei.2",
+		"md5": "xxxxxxxxxx",
+		"length": "11111",
+		"channel": "DBOS_F1"}]
+	}
+
+
+	p=json.dumps(s)
+	data=json.loads(p)
+	root=os.getcwd();
+
+	update_apk_infos(p)
+	print(root)
+
+	# os.system('cmd /k start ')
+
+	pass
+
+# 增加调用main()函数
+if __name__ == '__main__':
+    main()
 
 
