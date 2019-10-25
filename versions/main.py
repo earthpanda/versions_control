@@ -180,7 +180,7 @@ class Main(QWidget):
                 parser.getAppBaseInfo(remote_apk)
                 apkInfo = parser.apkInfo
                 self.remote_apk_table.setItem(i, 0,
-                                              QTableWidgetItem(apkInfo["packagename"]))
+                                              QTableWidgetItem(apkInfo["packageName"]))
                 self.remote_apk_table.setItem(i, 1,
                                               QTableWidgetItem(apkInfo["versionCode"]))
                 self.remote_apk_table.setItem(i, 2,
@@ -209,6 +209,7 @@ class Main(QWidget):
 
     def move_rename_apk(self):
         main_data = self.drag_table.get_main_data()
+        main_data["code"] = "20900"
         if main_data:
             # 所有apk的信息内容
             local_apks = main_data["content"]
@@ -217,12 +218,14 @@ class Main(QWidget):
                 if os.path.exists(local_path):
                     # 上传前改名apk的路径地址
                     local_rename_path = "./{}.apk".format(local_apk["rename"])
-                    shutil.move(local_path, local_rename_path)
+                    # shutil.move(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
-            self.serverClient.push_apks(main_data["content"],
-                                        self.showInfos)
+            # self.serverClient.push_apks(main_data["content"],
+                    # self.showInfos)
+        apk_infos_json = json.dumps(main_data)
+        update_apk_infos(apk_infos_json)
 
     def get_table_infos(self):
         pass
@@ -257,9 +260,9 @@ class DragTable(QTableWidget):
             apkParser.getAppBaseInfo(url_use)
             print(ApkParser.apkInfo)
             apkInfo = ApkParser.apkInfo
-            packagename = apkInfo["packagename"]
+            packageName = apkInfo["packageName"]
             self.setItem(i, 0, QTableWidgetItem(
-                ApkParser.apkInfo["packagename"]))
+                ApkParser.apkInfo["packageName"]))
             self.setItem(i, 1, QTableWidgetItem(
                 ApkParser.apkInfo["versionCode"]))
             self.setItem(i, 2, QTableWidgetItem(
@@ -268,20 +271,20 @@ class DragTable(QTableWidget):
             # print("apk的本地路径为---" + apk.ApkParser.apkInfo["localPath"])
             name_map = final_name_platform[self.current_platform]
             # print(name_map)
-            # if packagename in platform_data.pre_install_apks:
+            # if packageName in platform_data.pre_install_apks:
             self.setItem(i, 3,
-                         QTableWidgetItem(name_map[packagename]))
+                         QTableWidgetItem(name_map[packageName]))
             apk_path = remote_system_apk_path[
                 self.current_platform]
             apkInfo["remote_full_path"] = (apk_path + "/" +
-                                           name_map[packagename] + ".apk")
+                                           name_map[packageName] + ".apk")
 
             simple_path = apk_path.replace(
                 remote_work_parent_dir, "${work}")
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
             apkInfo["rename"] = (
-                final_name_platform[self.current_platform][packagename])
+                final_name_platform[self.current_platform][packageName])
             content.append(apkInfo)
             i += 1
         self.main_data["content"] = content
