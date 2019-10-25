@@ -20,3 +20,7 @@
 !.idea/codeStyleSettings.xml
 !.idea/inspectionProfiles
 !.idea/inspectionProfiles/Project_Default.xml
+
+versions/build
+versions/dist
+
