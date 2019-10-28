@@ -37,3 +37,5 @@ sys.exit(app.exec())
 #### 删除PyQt5
 
 pip uninstall PyQt5
+
+#### 配置aapt环境变量

@@ -218,7 +218,7 @@ class Main(QWidget):
                 if os.path.exists(local_path):
                     # 上传前改名apk的路径地址
                     local_rename_path = "./{}.apk".format(local_apk["rename"])
-                    # shutil.move(local_path, local_rename_path)
+                    shutil.move(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
@@ -255,7 +255,7 @@ class DragTable(QTableWidget):
         content = []
         i = 0
         for url in self.urls:
-            url_use = url.toString().replace("file:///", "/")
+            url_use = url.toString().replace("file:///", "")
             apkParser = ApkParser()
             apkParser.getAppBaseInfo(url_use)
             print(ApkParser.apkInfo)
