@@ -1,10 +1,8 @@
 import os
 
 
-
-
-def upload_folder_path():
-	return ""
+upload_folder_path=""
+	
 
 
 ### debug windows 
