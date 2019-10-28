@@ -1,13 +1,24 @@
 import os
 
 
-### debug 用于开发的配置
-upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
 
 
+def upload_folder_path():
+	return ""
 
 
-### .exe 用于打出.exe的文件配置
+### debug windows 
+# upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
+
+### debug mac
+# upload_folder_path=os.path.join(os.getcwd(),"..","..","VersionsRecord","file")
+
+
+### .exe windows 
+# upload_folder_path=os.path.join(os.getcwd(),"file")
+
+
+### .exe mac 
 # upload_folder_path=os.path.join(os.getcwd(),"file")
 
 

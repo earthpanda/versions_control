@@ -13,7 +13,7 @@ from ...entity.ApkEntity import ApkEntity
 from ...config.config import *
 
 # 需项目工程配置和VersionsRecord 项目同目录
-root = upload_folder_path
+root = upload_folder_path()
 
 
 """
