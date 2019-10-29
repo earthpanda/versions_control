@@ -15,6 +15,8 @@ from ...config.config import *
 # 需项目工程配置和VersionsRecord 项目同目录
 root = upload_folder_path
 
+print("midapk root is "+root)
+
 
 """
 更新apk的信息
