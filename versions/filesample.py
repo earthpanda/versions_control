@@ -9,7 +9,7 @@ from src.midground.file.midfile import delete_apks, delete_all
 from src.entity.ApkEntity import *
 from src.util.apk_info_writer import *
 from src.apk.apk_info import *
-from src.midground.file.midapk import update_apk_infos,get_apk_infos
+from src.midground.file.midapk import update_apk_infos, get_apk_infos
 
 
 # write_file_string(os.path.join(s,"one","two","three"), "test.txt", "this is a test in three ", False)
@@ -50,9 +50,6 @@ from src.midground.file.midapk import update_apk_infos,get_apk_infos
 #     test()
 
 
-
-
-
 # print(update_apk_infos(p))
 
 # test={"model": "C1",
@@ -72,38 +69,37 @@ from src.midground.file.midapk import update_apk_infos,get_apk_infos
 
 def main():
 
-	s={"model": "F1",
-	"code": "20801",
-	"content": [{
-		"versionName": "f1_20800",
-		"versionCode": "20806",
-		"packageName": "com.dangbei.0",
-		"md5": "xxxx",
-		"length": "11112",
-		"channel": "DBOS_F1"},{
-		"versionName": "f1_20800",
-		"versionCode": "20800",
-		"packageName": "com.dangbei.2",
-		"md5": "xxxxxxxxxx",
-		"length": "11111",
-		"channel": "DBOS_F1"}]
-	}
+    s = {"model": "F1",
+         "code": "20801",
+         "content": [{
+             "versionName": "f1_20800",
+             "versionCode": "20806",
+             "packageName": "com.dangbei.0",
+             "md5": "xxxx",
+             "length": "11112",
+             "channel": "DBOS_F1"}, {
+             "versionName": "f1_20800",
+             "versionCode": "20800",
+             "packageName": "com.dangbei.2",
+             "md5": "xxxxxxxxxx",
+             "length": "11111",
+             "channel": "DBOS_F1"}]
+         }
 
-	print(os.getcwd())
+    print(os.getcwd())
 
-	p=json.dumps(s)
-	data=json.loads(p)
-	root=os.getcwd();
+    p = json.dumps(s)
+    data = json.loads(p)
+    root = os.getcwd()
 
-	update_apk_infos(p)
-	print(root)
+    update_apk_infos(p)
+    print(root)
 
-	os.system('cmd /k start ')
+    os.system('cmd /k start ')
 
-	pass
+    pass
+
 
 # 增加调用main()函数
 if __name__ == '__main__':
     main()
-
-

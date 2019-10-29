@@ -2,7 +2,7 @@ import os
 
 
 ### debug
-# upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
+upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
 
 
 
@@ -16,7 +16,7 @@ import os
 
 
 ### .exe
-upload_folder_path=os.path.join(os.getcwd(),"file")
+# upload_folder_path=os.path.join(os.getcwd(),"file")
 
 
 

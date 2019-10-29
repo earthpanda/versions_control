@@ -40,11 +40,11 @@ json_string
 
 
 def update_apk_infos(json_string):
-    _pull_file_from_git()
+    # _pull_file_from_git()
     # 将记录更新到文件中
-    if(_update_record_file(json_string)):
-        _push_file_to_git()
-        return True
+    # if(_update_record_file(json_string)):
+        # _push_file_to_git()
+        # return True
     pass
 
 

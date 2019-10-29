@@ -6,7 +6,14 @@ package_name_map_f1 = {"com.dangbei.leard.leradlauncher": "LeradLauncher",
                        "com.dangbei.speech": "SpeechClient",
                        "com.dangbei.lerad.screensaver": "ScreenSaver",
                        "com.dangbei.leard.literacy": "DangbeiShizi",
-                       "com.dangbei.leard.settings": "LeradSettings"}
+                       "com.dangbei.leard.settings": "LeradSettings",
+                       "com.dangbei.leard.mediaplayer": "LeradMediaPlayer",
+                       "com.dangbei.joylink": "JoyLink",
+                       "com.dangbei.lerad.leradwatcher": "LeradWatcher",
+                       "com.dangbei.health.fitness.os": "Fitness",
+                       "com.dangbei.mimir.pictureviewer": "PictureBrowser",
+                       "com.dangbei.zhushou.os": "ProjectorManager",
+                       "com.dangbei.lerad.ota3435": "ControllerOta"}
 
 package_name_map_b1 = {"com.dangbei.leard.leradlauncher.b2": "LeradLauncher",
                        "com.dangbei.lerad.etna.sample": "Etna",
@@ -55,7 +62,6 @@ main_standard_data = {
         "length": "11111",
         "channel": "DBOS_F1"}]
 }
-
 
 
 # for key, value in package_name_map.items():

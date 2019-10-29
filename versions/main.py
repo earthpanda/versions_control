@@ -72,10 +72,10 @@ class Main(QWidget):
 
         # 手动输入版本号信息区域
         label_note_version = QLabel("请输入版本号:")
-        l_edit_version = QLineEdit()
-        sizePolicy = l_edit_version.sizePolicy()
+        self.l_edit_version = QLineEdit()
+        sizePolicy = self.l_edit_version.sizePolicy()
         sizePolicy.setHorizontalPolicy(QSizePolicy.Preferred)
-        l_edit_version.setSizePolicy(sizePolicy)
+        self.l_edit_version.setSizePolicy(sizePolicy)
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
         self.l_edit_down_path = QLineEdit()
@@ -128,7 +128,7 @@ class Main(QWidget):
         # 右边布局添加控件
         v_right_layout.addLayout(platform_layout)
         v_right_layout.addWidget(label_note_version)
-        v_right_layout.addWidget(l_edit_version)
+        v_right_layout.addWidget(self.l_edit_version)
         v_right_layout.addWidget(btn_select_down_path)
         v_right_layout.addWidget(btn_select_file_path)
         v_right_layout.addWidget(btn_action_down)
@@ -153,6 +153,15 @@ class Main(QWidget):
         self.serverClient.login(self.showInfos)
         self.serverClient.getBranch(self.showInfos, self.init_combo_box)
 
+        # 生成需要使用的文件夹路径
+        download_path = "./remote_apks"
+        cache_path = "./cache_apks"
+        if not os.path.exists(download_path):
+            os.makedirs(download_path)
+
+        if not os.path.exists(cache_path):
+            os.makedirs(cache_path)
+
     def autoScrollTextEdit(self):
         cursor = self.text_edit_log.textCursor()
         cursor.movePosition(QTextCursor.End)
@@ -171,7 +180,7 @@ class Main(QWidget):
 
     def parseApks(self):
         parser = ApkParser()
-        remote_apk_path = "/Users/nemoli/Downloads/remoteApks"
+        remote_apk_path = "./remote_apks"
         files = os.listdir(remote_apk_path)
         i = 0
         for file in files:
@@ -209,7 +218,8 @@ class Main(QWidget):
 
     def move_rename_apk(self):
         main_data = self.drag_table.get_main_data()
-        main_data["code"] = "20900"
+        # main_data["code"] = "20900"
+        main_data["code"] = self.l_edit_version.text()
         if main_data:
             # 所有apk的信息内容
             local_apks = main_data["content"]
@@ -217,8 +227,9 @@ class Main(QWidget):
                 local_path = local_apk["localPath"]
                 if os.path.exists(local_path):
                     # 上传前改名apk的路径地址
-                    local_rename_path = "./{}.apk".format(local_apk["rename"])
-                    # shutil.move(local_path, local_rename_path)
+                    local_rename_path = "./cache_apks/{}.apk".format(
+                        local_apk["rename"])
+                    shutil.move(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
@@ -255,7 +266,11 @@ class DragTable(QTableWidget):
         content = []
         i = 0
         for url in self.urls:
-            url_use = url.toString().replace("file:///", "/")
+            print(os.name)
+            if os.name == 'nt':
+                url_use = url.toString().replace("file:///", "")
+            else:
+                url_use = url.toString().replace("file:///", "/")
             apkParser = ApkParser()
             apkParser.getAppBaseInfo(url_use)
             print(ApkParser.apkInfo)
