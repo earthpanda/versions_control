@@ -10,7 +10,7 @@ class ServerClient:
     def __init__(self):
         self.remote_code_path = "/home/user/workspace/work/mstar938vfc/code"
         self.remote_path_parent = "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
-        self.local_path_parent = "/Users/nemoli/Downloads/remoteApks"
+        self.local_path_parent = "./remote_apks"
         self.sftp_client = None
 
     def login(self, callback):
@@ -38,7 +38,7 @@ class ServerClient:
         for apk in remote_apks:
             remote_path = self.remote_path_parent + "/" + apk
             local_path = self.local_path_parent + "/" + apk
-            # sftp_client.get(remote_path, local_path)
+            self.sftp_client.get(remote_path, local_path)
             callback("下载文件:" + local_path)
             # print(remote_path)
 
