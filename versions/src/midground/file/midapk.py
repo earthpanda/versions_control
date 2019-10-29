@@ -7,13 +7,15 @@ import git
 import re
 
 
+
 from ...util.filehelper import write_file_string, read_file_string
 from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
-from ...config.config import *
+from ...config import config as gl
+
 
 # 需项目工程配置和VersionsRecord 项目同目录
-root = upload_folder_path
+root = gl.upload_folder_path
 
 print("midapk root is "+root)
 

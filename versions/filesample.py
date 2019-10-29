@@ -73,7 +73,7 @@ from src.midground.file.midapk import update_apk_infos,get_apk_infos
 def main():
 
 	s={"model": "F1",
-	"code": "20801",
+	"code": "20803",
 	"content": [{
 		"versionName": "f1_20800",
 		"versionCode": "20806",
@@ -93,10 +93,7 @@ def main():
 
 	p=json.dumps(s)
 	data=json.loads(p)
-	root=os.getcwd();
-
 	update_apk_infos(p)
-	print(root)
 
 	# os.system('cmd /k start ')
 
