@@ -3,12 +3,17 @@ import os
 
 
 """
-	用来上传apk信息的path
+是否是debug
 """
-
 def debug():
 	return root.endswith("versions")
 
+
+
+
+"""
+	用来上传apk信息的path
+"""
 global upload_folder_path
 
 root=os.getcwd()
