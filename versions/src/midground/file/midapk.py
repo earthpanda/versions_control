@@ -7,14 +7,20 @@ import git
 import re
 
 
+
 from ...util.filehelper import write_file_string, read_file_string
 from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
+<<<<<<< HEAD
 from ...config.config import *
 from ...util.apk_info_reader import *
+=======
+from ...config import config as gl
+
+>>>>>>> 0a38668a051ff5d189493bd9f69bd1dba8024ace
 
 # 需项目工程配置和VersionsRecord 项目同目录
-root = upload_folder_path
+root = gl.upload_folder_path
 
 print("midapk root is "+root)
 
@@ -43,11 +49,11 @@ json_string
 
 
 def update_apk_infos(json_string):
-    # _pull_file_from_git()
+    _pull_file_from_git()
     # 将记录更新到文件中
-    # if(_update_record_file(json_string)):
-        # _push_file_to_git()
-        # return True
+    if(_update_record_file(json_string)):
+        _push_file_to_git()
+        return True
     pass
 
 
