@@ -24,6 +24,7 @@ from src.midground.config.platform_data import *
 from src.midground.file.midapk import *
 # from src.gui.apkutil import *
 from PyQt5.QtWidgets import *
+from src.util.apk_info_reader import *
 
 
 # from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
@@ -298,6 +299,9 @@ class DragTable(QTableWidget):
                 remote_work_parent_dir, "${work}")
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
+
+            channel = get_channel(url_use)
+            self.setItem(i, 4, QTableWidgetItem(channel))
             apkInfo["rename"] = (
                 final_name_platform[self.current_platform][packageName])
             content.append(apkInfo)

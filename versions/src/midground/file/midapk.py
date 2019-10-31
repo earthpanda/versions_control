@@ -11,6 +11,7 @@ import re
 from ...util.filehelper import write_file_string, read_file_string
 from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
+from ...util.apk_info_reader import *
 from ...config import config as gl
 
 # 需项目工程配置和VersionsRecord 项目同目录
@@ -156,8 +157,6 @@ def _update_record_file(json_string):
         code = data_in["code"]
         app_infos = data_in["content"]
 
-
-
         # 进行文件夹和文件名称的定义
         folder_path = os.path.join(root, model, code)
 
@@ -268,24 +267,22 @@ def _update_record_file(json_string):
 
 def _push_file_to_git():
 
-	try:
+    try:
 
-		folder_path = os.path.abspath(os.path.join(root, ".."))
-		repo = git.Repo.init(path=folder_path)
-		repo.git.add(".")
-		repo.git.commit(m="update_file "+str(format_time2()))
-		repo.git.push()
-		print(repo.git.status())
-		pass
+        folder_path = os.path.abspath(os.path.join(root, ".."))
+        repo = git.Repo.init(path=folder_path)
+        repo.git.add(".")
+        repo.git.commit(m="update_file "+str(format_time2()))
+        repo.git.push()
+        print(repo.git.status())
+        pass
 
-	except Exception as e:
-		traceback.print_exc()
-	else:
-		pass
-	finally:
-		pass
-   
-
+    except Exception as e:
+        traceback.print_exc()
+    else:
+        pass
+    finally:
+        pass
 
 
 """
@@ -295,19 +292,18 @@ def _push_file_to_git():
 
 def _pull_file_from_git():
 
-	try:
-		print("_pull_file_from_git")
-		folder_path = os.path.abspath(os.path.join(root, ".."))
-		repo = git.Repo.init(path=folder_path)
-		repo.git.fetch()
-		repo.git.pull()
+    try:
+        print("_pull_file_from_git")
+        folder_path = os.path.abspath(os.path.join(root, ".."))
+        repo = git.Repo.init(path=folder_path)
+        repo.git.fetch()
+        repo.git.pull()
 
-		pass
-	except Exception as e:
-		traceback.print_exc()
-	else:
-		pass
-
+        pass
+    except Exception as e:
+        traceback.print_exc()
+    else:
+        pass
 
 
 """
@@ -352,6 +348,6 @@ class ApkParser:
         self.apkInfo['versionCode'] = versionCode
         self.apkInfo['versionName'] = versionName
         self.apkInfo['localPath'] = param_apk_path
-        self.apkInfo['channel'] = "md5"
-        self.apkInfo['md5'] = "md5"
-        self.apkInfo['length'] = "length"
+        self.apkInfo['channel'] = get_channel(param_apk_path)
+        self.apkInfo['md5'] = md5(param_apk_path)
+        self.apkInfo['length'] = file_size(param_apk_path)

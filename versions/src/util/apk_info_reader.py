@@ -19,13 +19,13 @@ def get_app_base_info(parm_aapt_path, parm_apk_path):
 # 在android->defaultConfig中buildConfigField "String", "CHANNEL"同级的地方
 # 添加：resValue "string", "defaultChannelLib"（名字随意不和现有string资源重复）,
 # "<channel>" + （channel的获取方式和上面CHANNEL一样）+ "</channel>"
-def get_channle(parm_aapt_path, parm_apk_path):
-    get_info_command = "%s dump strings %s" % (parm_aapt_path, parm_apk_path)
+def get_channel(parm_apk_path):
+    get_info_command = "%s dump strings %s" % ("aapt", parm_apk_path)
     output = os.popen(get_info_command).read()
     match = re.compile("String #(\d+): <channel>(\S+)</channel>").search(output)
     if not match:
         return "unknown"
-        # raise Exception("can't get getChannle")
+        # raise Exception("can't get getChannel")
     return match.group(2)
 
 

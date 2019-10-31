@@ -11,6 +11,7 @@
 *.ipr
 *.iws
 *.exe
+*.swp
 .idea/**
 .idea/gradle.xml
 .idea/misc.xml
