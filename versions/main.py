@@ -233,8 +233,8 @@ class Main(QWidget):
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
-            # self.serverClient.push_apks(main_data["content"],
-                    # self.showInfos)
+                self.serverClient.push_apks(main_data["content"],
+                    self.showInfos)
         apk_infos_json = json.dumps(main_data)
         update_apk_infos(apk_infos_json)
 

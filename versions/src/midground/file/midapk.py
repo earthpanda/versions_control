@@ -13,7 +13,6 @@ from ...util.time import format_time2
 from ...entity.ApkEntity import ApkEntity
 from ...config import config as gl
 
-
 # 需项目工程配置和VersionsRecord 项目同目录
 root = gl.upload_folder_path
 

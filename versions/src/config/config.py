@@ -1,5 +1,5 @@
 import os
-
+import platform
 
 
 """
@@ -7,6 +7,12 @@ import os
 """
 def debug():
 	return root.endswith("versions")
+
+"""
+是否是windows
+"""
+def windows():
+	return (platform.system())=="Windows"	
 
 
 
@@ -16,12 +22,18 @@ def debug():
 """
 global upload_folder_path
 
+
+"""
+
+	本地下载的apk的路径 如tower下载下来的路径
+
+"""
+global default_local_download_apk_path
+
 root=os.getcwd()
 
 
 print("config.py "+"root is "+root)
-
-
 
 
 """
@@ -31,26 +43,18 @@ if(debug()):
 	upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
 else:
 	upload_folder_path=os.path.join(os.getcwd(),"file")
+
+
+"""
+根据不同平台设置不同的一些值
+"""
+if(windows()):
+	default_local_download_apk_path="C:/Users/Admin/Downloads"
+	pass
+else:
+	pass	
 	
 
-
-
-
-
-
-### debug windows 
-# upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
-
-### debug mac
-# upload_folder_path=os.path.join(os.getcwd(),"..","..","VersionsRecord","file")
-
-
-### .exe windows 
-# upload_folder_path=os.path.join(os.getcwd(),"file")
-
-
-### .exe mac 
-# upload_folder_path=os.path.join(os.getcwd(),"file")
 
 
 

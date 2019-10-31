@@ -27,6 +27,7 @@ versions/.idea/
 versions/build/
 versions/dist/
 versions/*.apk
+versions/cache_apks/
 
 /VersionsRecord
 
