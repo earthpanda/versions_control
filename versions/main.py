@@ -25,7 +25,7 @@ from src.midground.file.midapk import *
 # from src.gui.apkutil import *
 from PyQt5.QtWidgets import *
 from src.util.apk_info_reader import *
-
+import src.config.config as gl
 
 # from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
 #                              QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
@@ -82,6 +82,7 @@ class Main(QWidget):
         self.l_edit_down_path = QLineEdit()
         self.l_edit_down_path.setText(os.path.abspath('.'))
         btn_select_down_path = QPushButton("选择apk下载目录")
+        btn_open_download_path = QPushButton("打开当前系统的下载目录")
 
         file_path_label = QLabel("apk提交信息记录文件保存路径")
         self.l_edit_file_path = QLineEdit()
@@ -131,6 +132,7 @@ class Main(QWidget):
         v_right_layout.addWidget(label_note_version)
         v_right_layout.addWidget(self.l_edit_version)
         v_right_layout.addWidget(btn_select_down_path)
+        v_right_layout.addWidget(btn_open_download_path)
         v_right_layout.addWidget(btn_select_file_path)
         v_right_layout.addWidget(btn_action_down)
         v_right_layout.addWidget(open_file_btn)
@@ -142,6 +144,8 @@ class Main(QWidget):
 
         btn_select_down_path.clicked.connect(
             lambda: self.openDirDialog(self.l_edit_down_path))
+        btn_open_download_path.clicked.connect(
+            lambda: self.openDownloadDialog(gl.default_local_download_apk_path))
         btn_select_file_path.clicked.connect(
             lambda: self.openDirDialog(self.l_edit_file_path))
         btn_action_down.clicked.connect(self.downApks)
@@ -172,6 +176,10 @@ class Main(QWidget):
         path = QFileDialog.getExistingDirectory(self, "", "./")
         if path:
             line_edit.setText(path)
+
+    def openDownloadDialog(self, current_path):
+        QFileDialog.getExistingDirectory(self, "", current_path)
+
 
     def downApks(self):
         # self.serverClient.login(self.showInfos)

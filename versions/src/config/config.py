@@ -10,12 +10,17 @@ def debug():
 
 """
 是否是windows
+# Darwin
 """
 def windows():
 	return (platform.system())=="Windows"	
 
-
-
+"""
+是否是Mac os
+Darwin
+"""
+def macos():
+	return platform.system()=="Darwin"
 
 """
 	用来上传apk信息的path
@@ -50,6 +55,9 @@ else:
 """
 if(windows()):
 	default_local_download_apk_path="C:/Users/Admin/Downloads"
+	pass
+elif(macos()):
+	default_local_download_apk_path = os.environ['HOME'] + os.sep + "Downloads"
 	pass
 else:
 	pass	
