@@ -26,7 +26,6 @@ from src.midground.file.midapk import *
 from PyQt5.QtWidgets import *
 from src.util.apk_info_reader import *
 
-
 # from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
 #                              QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
 #                              QHeaderView, QLabel, QFrame, QTableWidget,
@@ -80,7 +79,7 @@ class Main(QWidget):
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
         self.l_edit_down_path = QLineEdit()
-        self.l_edit_down_path.setText(os.path.abspath('.'))
+        self.l_edit_down_path.setText(os.path.abspath('./remote_apks'))
         btn_select_down_path = QPushButton("选择apk下载目录")
 
         file_path_label = QLabel("apk提交信息记录文件保存路径")
@@ -151,14 +150,20 @@ class Main(QWidget):
 
         self.setLayout(h_main_layout)
         self.show()
+        # 登录服务器
         self.serverClient.login(self.showInfos)
+        # 获取分支名称
         self.serverClient.getBranch(self.showInfos, self.init_combo_box)
 
         # 生成需要使用的文件夹路径
-        download_path = "./remote_apks"
+        download_path_f1 = "./remote_apks/F1"
+        download_path_b1 = "./remote_apks/B1"
         cache_path = "./cache_apks"
-        if not os.path.exists(download_path):
-            os.makedirs(download_path)
+        if not os.path.exists(download_path_f1):
+            os.makedirs(download_path_f1)
+
+        if not os.path.exists(download_path_b1):
+            os.makedirs(download_path_b1)
 
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
@@ -175,7 +180,7 @@ class Main(QWidget):
 
     def downApks(self):
         # self.serverClient.login(self.showInfos)
-        self.serverClient.download_apks(self.showInfos)
+        self.serverClient.download_apks(self.current_platform, self.showInfos)
         # self.serverClient.getBranch(self.showInfos)
         self.parseApks()
 
@@ -235,7 +240,7 @@ class Main(QWidget):
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
                 self.serverClient.push_apks(main_data["content"],
-                    self.showInfos)
+                                            self.showInfos)
         apk_infos_json = json.dumps(main_data)
         update_apk_infos(apk_infos_json)
 

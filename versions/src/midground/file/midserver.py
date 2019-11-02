@@ -3,14 +3,15 @@
 import paramiko
 import os
 import re
+from ..config.platform_data import *
 
 
 class ServerClient:
 
     def __init__(self):
-        self.remote_code_path = "/home/user/workspace/work/mstar938vfc/code"
-        self.remote_path_parent = "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
-        self.local_path_parent = "./remote_apks"
+        # self.remote_code_path = "/home/user/workspace/work/mstar938vfc/code"
+        # self.remote_path_parent = "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
+        # self.local_path_parent = "./remote_apks"
         self.sftp_client = None
 
     def login(self, callback):
@@ -29,15 +30,16 @@ class ServerClient:
                             username='user', password='123456')
         callback("登录服务器成功")
 
-    def download_apks(self, callback):
+    def download_apks(self, platform, callback):
         # 4. 打开sftp连接
         self.sftp_client = self.client.open_sftp()
 
-        remote_apks = self.sftp_client.listdir(self.remote_path_parent)
+        remote_apks = self.sftp_client.listdir(
+            remote_system_apk_path[platform])
         log = ""
         for apk in remote_apks:
-            remote_path = self.remote_path_parent + "/" + apk
-            local_path = self.local_path_parent + "/" + apk
+            remote_path = remote_system_apk_path[platform] + "/" + apk
+            local_path = local_path_parent[platform] + "/" + apk
             self.sftp_client.get(remote_path, local_path)
             callback("下载文件:" + local_path)
             # print(remote_path)
@@ -54,8 +56,8 @@ class ServerClient:
     def getBranch(self, callback, listBranchs):
         # 4.执行操作
         # 标准输入，标准输出，标准错误输出。
-        cmd = 'cd {}; git branch'.format(self.remote_code_path)
-        stdin, stdout, stderr = self.client.exec_command(cmd)
+        cmd_f1 = 'cd {}; git branch'.format(remote_code_path["F1"])
+        stdin, stdout, stderr = self.client.exec_command(cmd_f1)
         # Execute a command on the SSH server.  A new `.Channel` is opened and
         # the requested command is executed.  The command's input and output
         # streams are returned as Python ``file``-like objects representing
@@ -67,8 +69,17 @@ class ServerClient:
         print(res)
         branch_line = re.search('\* (\w+)', res)
         branch = branch_line.group(1)
-        callback("当前服务端的分支为:" + branch)
+        callback("当前F1所处的分支为:" + branch)
         listBranchs(res.split("\n"))
+
+        # 获取B1的当前分支
+        cmd_b1 = 'cd {}; git branch'.format(remote_code_path['B1'])
+        stdin, stdout, stderr = self.client.exec_command(cmd_b1)
+        res_b1 = stdout.read().decode('utf-8')
+        print(res_b1)
+        branch_line_b1 = re.search('\* (\w+)', res_b1)
+        branch_b1 = branch_line_b1.group(1)
+        callback("当前B1所处的分支为:" + branch_b1)
 
     def run_command(self, command, callback):
         stdin, stdout, stderr = self.client.exec_command(command)
