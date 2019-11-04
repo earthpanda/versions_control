@@ -184,7 +184,18 @@ class Main(QWidget):
             line_edit.setText(path)
 
     def openDownloadDialog(self, current_path):
-        QFileDialog.getExistingDirectory(self, "", current_path)
+        files, filetype = QFileDialog.getOpenFileNames(self,
+                                                       "多文件选择",
+                                                       current_path,  # 起始路径
+                                                       "All Files (*);;PDF Files (*.pdf);;Text Files (*.txt)")
+        if len(files) == 0:
+            print("\n取消选择")
+            return
+
+        print("\n你选择的文件为:")
+        for file in files:
+            print(file)
+        print("文件筛选器类型: ", filetype)
 
     def downApks(self):
         # self.serverClient.login(self.showInfos)
@@ -247,8 +258,8 @@ class Main(QWidget):
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
-                self.serverClient.push_apks(main_data["content"],
-                                            self.showInfos)
+                # self.serverClient.push_apks(main_data["content"],
+                #                             self.showInfos)
         apk_infos_json = json.dumps(main_data)
         update_apk_infos(apk_infos_json)
 
