@@ -22,7 +22,7 @@ package_name_map_b1 = {"com.dangbei.leard.leradlauncher.b2": "LeradLauncher",
                        "com.aispeech.tvui": "Tvui",
                        "com.dangbei.speech": "SpeechClient",
                        "com.dangbei.lerad.screensaver": "ScreenSaver",
-                       "com.dangbei.zhushou.os": "DangbeiShizi",
+                       "com.dangbei.leard.literacy": "DangbeiShizi",
                        "com.dangbei.leard.settings": "LeradSettings",
                        "com.dangbei.leard.mediaplayer": "LeradMediaPlayer",
                        "com.dangbei.joylink": "JoyLink",
@@ -54,7 +54,7 @@ remote_pre_install_path = {"F1": "/home/user/workspace/work/mstar938vfc/code/ven
                            "D1": ""}
 
 remote_tvui_path = {"F1": "/home/user/workspace/work/mstar938vfc/code/device/mstar/mangosteen/apps/Tvui",
-                    "B1": "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk",
+                    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk",
                     "C1": "",
                     "D1": ""}
 

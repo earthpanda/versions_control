@@ -314,12 +314,23 @@ class DragTable(QTableWidget):
             # if packageName in platform_data.pre_install_apks:
             self.setItem(i, 3,
                          QTableWidgetItem(name_map[packageName]))
-            apk_path = remote_system_apk_path[
-                self.current_platform]
-            apkInfo["remote_full_path"] = (apk_path + "/" +
-                                           name_map[packageName] + ".apk")
-
-            simple_path = apk_path.replace(
+            # 对应平台 systemapk 远程地址
+            system_apk_path = remote_system_apk_path[self.current_platform]
+            # preinstall 远程地址
+            pre_apk_path = remote_pre_install_path[self.current_platform]
+            # Tvui 远程地址
+            tvui_path = remote_tvui_path[self.current_platform]
+            # 服务器具体地址
+            if "com.dangbei.leard.literacy" == packageName:
+                apkInfo["remote_full_path"] = (pre_apk_path + "/" +
+                                               name_map[packageName] + ".apk")
+            elif "com.aispeech.tvui" == packageName:
+                apkInfo["remote_full_path"] = (tvui_path + "/" +
+                                               name_map[packageName] + ".apk")
+            else:
+                apkInfo["remote_full_path"] = (system_apk_path + "/" +
+                                               name_map[packageName] + ".apk")
+            simple_path = apkInfo["remote_full_path"].replace(
                 remote_work_parent_dir, "${work}")
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
