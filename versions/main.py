@@ -200,7 +200,7 @@ class Main(QWidget):
 
     # 解析当前选中apk的相关信息
     def parseApksInfo(self, files):
-        self.urls = files;
+        self.urls = files
         self.main_data = {}
         self.main_data["model"] = self.current_platform
         content = []
@@ -223,7 +223,7 @@ class Main(QWidget):
             # print(name_map)
             # if packageName in platform_data.pre_install_apks:
             self.drag_table.setItem(i, 3,
-                         QTableWidgetItem(name_map[packageName]))
+                                    QTableWidgetItem(name_map[packageName]))
             apk_path = remote_system_apk_path[
                 self.current_platform]
             apkInfo["remote_full_path"] = (apk_path + "/" +
@@ -232,10 +232,10 @@ class Main(QWidget):
             simple_path = apk_path.replace(
                 remote_work_parent_dir, "${work}")
             self.drag_table.setItem(i, 5,
-                         QTableWidgetItem(simple_path))
+                                    QTableWidgetItem(simple_path))
 
-            # channel = get_channel(url_use)
-            # self.setItem(i, 4, QTableWidgetItem(channel))
+            channel = get_channel(url)
+            self.drag_table.setItem(i, 4, QTableWidgetItem(channel))
             apkInfo["rename"] = (
                 final_name_platform[self.current_platform][packageName])
             content.append(apkInfo)
@@ -381,8 +381,8 @@ class DragTable(QTableWidget):
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
 
-            # channel = get_channel(url_use)
-            # self.setItem(i, 4, QTableWidgetItem(channel))
+            channel = get_channel(url_use)
+            self.setItem(i, 4, QTableWidgetItem(channel))
             apkInfo["rename"] = (
                 final_name_platform[self.current_platform][packageName])
             content.append(apkInfo)
