@@ -29,6 +29,7 @@ versions/build/
 versions/dist/
 versions/*.apk
 versions/cache_apks/
+versions/remote_apks/
 
 /VersionsRecord
 
