@@ -196,12 +196,13 @@ class Main(QWidget):
         for file in files:
             print(file)
         self.parseApksInfo(files)
-        print("文件筛选器类型: ", filetype)
+        # print("文件筛选器类型: ", filetype)
+        self.move_rename_apk()
 
     # 解析当前选中apk的相关信息
     def parseApksInfo(self, files):
         self.urls = files
-        self.main_data = {}
+        self.main_data = self.drag_table.main_data
         self.main_data["model"] = self.current_platform
         content = []
         i = 0
@@ -234,8 +235,8 @@ class Main(QWidget):
             self.drag_table.setItem(i, 5,
                                     QTableWidgetItem(simple_path))
 
-            channel = get_channel(url)
-            self.drag_table.setItem(i, 4, QTableWidgetItem(channel))
+            # channel = get_channel(url)
+            # self.drag_table.setItem(i, 4, QTableWidgetItem(channel))
             apkInfo["rename"] = (
                 final_name_platform[self.current_platform][packageName])
             content.append(apkInfo)
