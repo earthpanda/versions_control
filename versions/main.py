@@ -301,7 +301,7 @@ class Main(QWidget):
                     # 上传前改名apk的路径地址
                     local_rename_path = "./cache_apks/{}.apk".format(
                         local_apk["rename"])
-                    shutil.move(local_path, local_rename_path)
+                    shutil.copy(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["localPath"] = abs_path
                     # print(abs_path)
