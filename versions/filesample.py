@@ -11,6 +11,9 @@ from src.util.apk_info_writer import *
 from src.apk.apk_info import *
 from src.midground.file.midapk import update_apk_infos, get_apk_infos
 
+from src.entity.config.config_index import ConfigIndex
+
+
 
 # write_file_string(os.path.join(s,"one","two","three"), "test.txt", "this is a test in three ", False)
 # write_file_string(os.path.join(s,"test"), "test.txt", "this is a test", False)
@@ -69,28 +72,33 @@ from src.midground.file.midapk import update_apk_infos, get_apk_infos
 
 def main():
 
+	config_index = ConfigIndex()
+	config_index.set_platform("f1")
+	config_index.set_config_path("/f1")
 
-	s={"model": "F1",
-		"code": "20804",
-		"content": [{
-			"versionName": "f1_20800",
-			"versionCode": "20806",
-			"packageName": "com.dangbei.0",
-			"md5": "xxxx",
-			"length": "11112",
-			"channel": "DBOS_F1"},{
-			"versionName": "f1_20800",
-			"versionCode": "20800",
-			"packageName": "com.dangbei.2",
-			"md5": "xxxxxxxxxx",
-			"length": "11111",
-			"channel": "DBOS_F1"}]
-	}
-	p = json.dumps(s)
-	data = json.loads(p)
-	root = os.getcwd()
-	update_apk_infos(p)
-	print(root)
+	print(config_index.get_platform()+" "+config_index.get_config_path())
+
+	# s={"model": "F1",
+	# 	"code": "20804",
+	# 	"content": [{
+	# 		"versionName": "f1_20800",
+	# 		"versionCode": "20806",
+	# 		"packageName": "com.dangbei.0",
+	# 		"md5": "xxxx",
+	# 		"length": "11112",
+	# 		"channel": "DBOS_F1"},{
+	# 		"versionName": "f1_20800",
+	# 		"versionCode": "20800",
+	# 		"packageName": "com.dangbei.2",
+	# 		"md5": "xxxxxxxxxx",
+	# 		"length": "11111",
+	# 		"channel": "DBOS_F1"}]
+	# }
+	# p = json.dumps(s)
+	# data = json.loads(p)
+	# root = os.getcwd()
+	# update_apk_infos(p)
+	# print(root)
 	pass
 
 
