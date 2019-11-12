@@ -3,7 +3,7 @@
 import paramiko
 import os
 import re
-from ..config.platform_data import *
+from ..config.mid_platform_data import *
 
 
 class ServerClient:

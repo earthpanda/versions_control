@@ -12,6 +12,7 @@ from src.apk.apk_info import *
 from src.midground.file.midapk import update_apk_infos, get_apk_infos
 
 from src.entity.config.config_index import ConfigIndex
+from src.config import config as gl 
 
 
 
@@ -77,6 +78,10 @@ def main():
 	config_index.set_config_path("/f1")
 
 	print(config_index.get_platform()+" "+config_index.get_config_path())
+
+	config_path=gl.config_path
+
+	print("config_path is "+config_path)
 
 	# s={"model": "F1",
 	# 	"code": "20804",
