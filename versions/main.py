@@ -22,17 +22,9 @@ from PyQt5 import QtWidgets
 from src.midground.file.midserver import ServerClient
 from src.midground.config.mid_platform_data import *
 from src.midground.file.midapk import *
-# from src.gui.apkutil import *
 from PyQt5.QtWidgets import *
 from src.util.apk_info_reader import *
 import src.config.config as gl
-
-# from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QTableWidget, QPushButton,
-#                              QApplication, QVBoxLayout, QTableWidgetItem, QCheckBox, QAbstractItemView,
-#                              QHeaderView, QLabel, QFrame, QTableWidget,
-#                              QGridLayout, QRadioButton, QLineEdit, QTextEdit,
-#                              QFileDialog, QButtonGroup, QComboBox)
-
 
 class Main(QWidget):
     """
@@ -151,7 +143,7 @@ class Main(QWidget):
         btn_action_down.clicked.connect(self.downApks)
         btn_checkout_branch.clicked.connect(lambda:
                                             self.checkout_branch(self.remote_branch_combobox.currentText()))
-        upload_btn.clicked.connect(self.move_rename_apk)
+        upload_btn.clicked.connect(self.upload_apks)
 
         self.setLayout(h_main_layout)
         self.show()
@@ -191,66 +183,16 @@ class Main(QWidget):
         if len(files) == 0:
             print("\n取消选择")
             return
-
         print("\n你选择的文件为:")
         for file in files:
             print(file)
-        self.parseApksInfo(files)
-        # print("文件筛选器类型: ", filetype)
-        self.move_rename_apk()
-
-    # 解析当前选中apk的相关信息
-    def parseApksInfo(self, files):
-        self.urls = files
-        self.main_data = self.drag_table.main_data
-        self.main_data["model"] = self.current_platform
-        content = []
-        i = 0
-        for url in self.urls:
-            apkParser = ApkParser()
-            apkParser.getAppBaseInfo(url)
-            print(ApkParser.apkInfo)
-            apkInfo = ApkParser.apkInfo
-            packageName = apkInfo["packageName"]
-            self.drag_table.setItem(i, 0, QTableWidgetItem(
-                ApkParser.apkInfo["packageName"]))
-            self.drag_table.setItem(i, 1, QTableWidgetItem(
-                ApkParser.apkInfo["versionCode"]))
-            self.drag_table.setItem(i, 2, QTableWidgetItem(
-                ApkParser.apkInfo["versionName"]))
-            # print("当前的平台为:" + self.current_platform)
-            # print("apk的本地路径为---" + apk.ApkParser.apkInfo["localPath"])
-            name_map = final_name_platform[self.current_platform]
-            # print(name_map)
-            # if packageName in platform_data.pre_install_apks:
-            self.drag_table.setItem(i, 3,
-                                    QTableWidgetItem(name_map[packageName]))
-            apk_path = remote_system_apk_path[
-                self.current_platform]
-            apkInfo["remote_full_path"] = (apk_path + "/" +
-                                           name_map[packageName] + ".apk")
-
-            simple_path = apk_path.replace(
-                remote_work_parent_dir, "${work}")
-            self.drag_table.setItem(i, 5,
-                                    QTableWidgetItem(simple_path))
-
-            # channel = get_channel(url)
-            # self.drag_table.setItem(i, 4, QTableWidgetItem(channel))
-            apkInfo["rename"] = (
-                final_name_platform[self.current_platform][packageName])
-            content.append(apkInfo)
-            i += 1
-        self.main_data["content"] = content
-        print(self.main_data)
+        self.drag_table.parseApks(files)
 
     def downApks(self):
-        # self.serverClient.login(self.showInfos)
         self.serverClient.download_apks(self.current_platform, self.showInfos)
-        # self.serverClient.getBranch(self.showInfos)
-        self.parseApks()
+        self.parse_remote_apks()
 
-    def parseApks(self):
+    def parse_remote_apks(self):
         parser = ApkParser()
         remote_apk_path = "./remote_apks"
         files = os.listdir(remote_apk_path)
@@ -267,8 +209,6 @@ class Main(QWidget):
                 self.remote_apk_table.setItem(i, 2,
                                               QTableWidgetItem(apkInfo["versionName"]))
                 i += 1
-        # print(remote_apk)
-        # print(file)
 
     def change_platform(self):
         sender = self.sender()
@@ -288,27 +228,10 @@ class Main(QWidget):
         cmd = 'git checkout {}'.format(branch.strip())
         print(cmd)
 
-    def move_rename_apk(self):
+    def upload_apks(self):
         main_data = self.drag_table.get_main_data()
-        # main_data["code"] = "20900"
-        main_data["code"] = self.l_edit_version.text()
         if main_data:
-            # 所有apk的信息内容
-            local_apks = main_data["content"]
-            for local_apk in local_apks:
-                local_path = local_apk["localPath"]
-                if os.path.exists(local_path):
-                    # 上传前改名apk的路径地址
-                    local_rename_path = "./cache_apks/{}.apk".format(
-                        local_apk["rename"])
-                    shutil.copy(local_path, local_rename_path)
-                    abs_path = os.path.abspath(local_rename_path)
-                    local_apk["localPath"] = abs_path
-                    # print(abs_path)
-                # self.serverClient.push_apks(main_data["content"],
-                #                             self.showInfos)
-        apk_infos_json = json.dumps(main_data)
-        update_apk_infos(apk_infos_json)
+            self.serverClient.push_apks(main_data["content"], self.showInfos)
 
     def get_table_infos(self):
         pass
@@ -318,7 +241,6 @@ class DragTable(QTableWidget):
     """
     自定义可以拖拽文件进入的表格控件
     """
-    urls = []
     current_platform = "F1"
 
     def __init__(self, row, column):
@@ -332,19 +254,25 @@ class DragTable(QTableWidget):
         print("ignore")
 
     def dragEnterEvent(self, dragEnterEvent):
-        self.urls = dragEnterEvent.mimeData().urls()
-        self.main_data = {}
-        self.main_data["model"] = self.current_platform
-        content = []
-        i = 0
-        for url in self.urls:
+        urls = dragEnterEvent.mimeData().urls()
+        url_uses = []
+        for url in urls:
             print(os.name)
             if os.name == 'nt':
                 url_use = url.toString().replace("file:///", "")
             else:
                 url_use = url.toString().replace("file:///", "/")
+            url_uses.append(url_use)
+        self.parseApks(url_uses)
+
+    def parseApks(self, urls):
+        self.main_data = {}
+        self.main_data["model"] = self.current_platform
+        content = []
+        i = 0
+        for url in urls:
             apkParser = ApkParser()
-            apkParser.getAppBaseInfo(url_use)
+            apkParser.getAppBaseInfo(url)
             print(ApkParser.apkInfo)
             apkInfo = ApkParser.apkInfo
             packageName = apkInfo["packageName"]
@@ -382,7 +310,7 @@ class DragTable(QTableWidget):
             self.setItem(i, 5,
                          QTableWidgetItem(simple_path))
 
-            channel = get_channel(url_use)
+            channel = get_channel(url)
             self.setItem(i, 4, QTableWidgetItem(channel))
             apkInfo["rename"] = (
                 final_name_platform[self.current_platform][packageName])
@@ -390,6 +318,27 @@ class DragTable(QTableWidget):
             i += 1
         self.main_data["content"] = content
         print(self.main_data)
+        self.move_rename_apk()
+
+    def move_rename_apk(self):
+        main_data = self.main_data
+        if main_data:
+            # 所有apk的信息内容
+            local_apks = main_data["content"]
+            for local_apk in local_apks:
+                local_path = local_apk["localPath"]
+                if os.path.exists(local_path):
+                    # 上传前改名apk的路径地址
+                    local_rename_path = "./cache_apks/{}.apk".format(
+                        local_apk["rename"])
+                    shutil.copy(local_path, local_rename_path)
+                    abs_path = os.path.abspath(local_rename_path)
+                    local_apk["localPath"] = abs_path
+                    # print(abs_path)
+                # self.serverClient.push_apks(main_data["content"],
+                #                             self.showInfos)
+        # apk_infos_json = json.dumps(main_data)
+        # update_apk_infos(apk_infos_json)
 
     def set_platform(self, platform):
         self.current_platform = platform
