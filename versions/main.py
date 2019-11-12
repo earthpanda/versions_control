@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import *
 from src.util.apk_info_reader import *
 import src.config.config as gl
 
+
 class Main(QWidget):
     """
     apk上传工具主界面，整体分为左右两个纵向布局
@@ -273,15 +274,15 @@ class DragTable(QTableWidget):
         for url in urls:
             apkParser = ApkParser()
             apkParser.getAppBaseInfo(url)
-            print(ApkParser.apkInfo)
-            apkInfo = ApkParser.apkInfo
+            # print(ApkParser.apkInfo)
+            apkInfo = apkParser.apkInfo
             packageName = apkInfo["packageName"]
             self.setItem(i, 0, QTableWidgetItem(
-                ApkParser.apkInfo["packageName"]))
+                apkInfo["packageName"]))
             self.setItem(i, 1, QTableWidgetItem(
-                ApkParser.apkInfo["versionCode"]))
+                apkInfo["versionCode"]))
             self.setItem(i, 2, QTableWidgetItem(
-                ApkParser.apkInfo["versionName"]))
+                apkInfo["versionName"]))
             # print("当前的平台为:" + self.current_platform)
             # print("apk的本地路径为---" + apk.ApkParser.apkInfo["localPath"])
             name_map = final_name_platform[self.current_platform]
@@ -333,11 +334,9 @@ class DragTable(QTableWidget):
                         local_apk["rename"])
                     shutil.copy(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
-                    local_apk["localPath"] = abs_path
-                    # print(abs_path)
-                # self.serverClient.push_apks(main_data["content"],
-                #                             self.showInfos)
-        # apk_infos_json = json.dumps(main_data)
+                    local_apk["local_cache_path"] = abs_path
+        apk_infos_json = json.dumps(main_data)
+        print("移动后的数据" + apk_infos_json)
         # update_apk_infos(apk_infos_json)
 
     def set_platform(self, platform):

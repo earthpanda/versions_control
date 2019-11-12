@@ -3,6 +3,7 @@
 import paramiko
 import os
 import re
+import json
 from ..config.platform_data import *
 
 
@@ -47,8 +48,10 @@ class ServerClient:
     def push_apks(self, apkInfos, callback):
         if not self.sftp_client:
             self.sftp_client = self.client.open_sftp()
+        info = json.dumps(apkInfos)
+        print("上传的apk信息" + info)
         for apkInfo in apkInfos:
-            local_path = apkInfo["localPath"]
+            local_path = apkInfo["local_cache_path"]
             remote_path = apkInfo["remote_full_path"]
             self.sftp_client.put(local_path, remote_path)
             callback("本地地址:{}--远程地址:{}".format(local_path, remote_path))
