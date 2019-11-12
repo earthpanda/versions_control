@@ -20,7 +20,7 @@ from PyQt5 import QtWidgets
 
 
 from src.midground.file.midserver import ServerClient
-from src.midground.config.platform_data import *
+from src.midground.config.mid_platform_data import *
 from src.midground.file.midapk import *
 from PyQt5.QtWidgets import *
 from src.util.apk_info_reader import *

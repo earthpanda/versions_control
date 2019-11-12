@@ -4,8 +4,8 @@ import paramiko
 import os
 import re
 import json
-from ..config.platform_data import *
-
+# from ..config.platform_data import *
+from ..config.mid_platform_data import *
 
 class ServerClient:
 

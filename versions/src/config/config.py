@@ -35,6 +35,19 @@ global upload_folder_path
 """
 global default_local_download_apk_path
 
+
+"""
+	关于配置信息的路径 这里说的是相对路径
+"""
+global config_path
+
+"""
+	关于配置信息的index总配置路径
+
+"""
+global config_path_index
+
+
 root=os.getcwd()
 
 
@@ -46,8 +59,12 @@ print("config.py "+"root is "+root)
 """
 if(debug()):
 	upload_folder_path=os.path.join(os.getcwd(), "..", "..", "VersionsRecord", "file")
+	config_path=os.path.join(os.getcwd(),"..","..","VersionsRecord","config")
+	config_path_index=os.path.join(config_path,"index.json")
 else:
 	upload_folder_path=os.path.join(os.getcwd(),"file")
+	config_path=os.path.join(os.getcwd(),"config")
+	config_path_index=os.path.join(config_path,"index.json")
 
 
 """
