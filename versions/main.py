@@ -48,7 +48,7 @@ class Main(QWidget):
         self.setWindowTitle('文件上传以及信息打印')
         upload_label = QLabel("需要上传的apk，拖拽文件进入")
 
-        self.drag_table = DragTable(10, 6)
+        self.drag_table = DragTable(15, 6)
         self.drag_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                    '重命名', '渠道', '服务端路径'])
         self.drag_table.setAcceptDrops(True)
@@ -83,7 +83,7 @@ class Main(QWidget):
         btn_select_file_path = QPushButton("选择文件保存路径")
 
         remote_apk_label = QLabel("远程apk包信息")
-        self.remote_apk_table = QTableWidget(10, 6)
+        self.remote_apk_table = QTableWidget(15, 6)
         self.remote_apk_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                          '重命名', '渠道', '服务端路径'])
         self.remote_apk_table.horizontalHeader().resizeSection(0, 220)
@@ -195,7 +195,7 @@ class Main(QWidget):
 
     def parse_remote_apks(self):
         parser = ApkParser()
-        remote_apk_path = "./remote_apks"
+        remote_apk_path = local_path_parent[self.current_platform]
         files = os.listdir(remote_apk_path)
         i = 0
         for file in files:
