@@ -68,7 +68,7 @@ class Main(QWidget):
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
         l_edit_down_path = QLineEdit()
-        l_edit_down_path.setText(os.path.abspath('./remote_apks'))
+        l_edit_down_path.setText(os.path.abspath('./remote_apks/F1'))
         btn_select_down_path = QPushButton("选择apk下载目录")
         btn_open_download_path = QPushButton("打开当前系统的下载目录")
 
@@ -127,11 +127,11 @@ class Main(QWidget):
         v_right_layout.addStretch(1)
 
         btn_select_down_path.clicked.connect(
-            lambda: self.open_dir_dialog(l_edit_down_path))
+            lambda: self.open_dir_dialog(l_edit_down_path, local_path_parent[self.current_platform]))
         btn_open_download_path.clicked.connect(
             lambda: self.open_download_dialog(gl.default_local_download_apk_path))
         btn_select_file_path.clicked.connect(
-            lambda: self.open_dir_dialog(l_edit_file_path))
+            lambda: self.open_dir_dialog(l_edit_file_path, "./"))
         btn_action_down.clicked.connect(self.down_apks)
         btn_checkout_branch.clicked.connect(lambda:
                                             self.checkout_branch(self.remote_branch_combobox.currentText()))
@@ -162,8 +162,8 @@ class Main(QWidget):
         cursor.movePosition(QTextCursor.End)
         self.text_edit_log.setTextCursor(cursor)
 
-    def open_dir_dialog(self, line_edit):
-        path = QFileDialog.getExistingDirectory(self, "", "./")
+    def open_dir_dialog(self, line_edit, relative_path):
+        path = QFileDialog.getExistingDirectory(self, "", relative_path)
         if path:
             line_edit.setText(path)
 
