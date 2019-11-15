@@ -350,8 +350,8 @@ class ApkParser:
         self.apkInfo['versionName'] = versionName
         self.apkInfo['localPath'] = param_apk_path
         self.apkInfo['channel'] = get_channel(param_apk_path)
-        self.apkInfo['md5'] = md5(param_apk_path)
-        self.apkInfo['length'] = file_size(param_apk_path)
+        self.apkInfo['md5'] = str(md5(param_apk_path))
+        self.apkInfo['length'] = str(file_size(param_apk_path))
 
     def get_apkinfo():
         return self.apkInfo

@@ -26,6 +26,7 @@ class Main(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.l_edit_version = QLineEdit()
         self.remote_branch_combobox = QComboBox()
         self.text_edit_log = QTextEdit()
         self.remote_apk_table = QTableWidget(15, 6)
@@ -61,10 +62,9 @@ class Main(QWidget):
 
         # 手动输入版本号信息区域
         label_note_version = QLabel("请输入版本号:")
-        l_edit_version = QLineEdit()
-        size_policy = l_edit_version.sizePolicy()
+        size_policy = self.l_edit_version.sizePolicy()
         size_policy.setHorizontalPolicy(QSizePolicy.Preferred)
-        l_edit_version.setSizePolicy(size_policy)
+        self.l_edit_version.setSizePolicy(size_policy)
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
         l_edit_down_path = QLineEdit()
@@ -114,7 +114,7 @@ class Main(QWidget):
         # 右边布局添加控件
         v_right_layout.addLayout(platform_layout)
         v_right_layout.addWidget(label_note_version)
-        v_right_layout.addWidget(l_edit_version)
+        v_right_layout.addWidget(self.l_edit_version)
         v_right_layout.addWidget(btn_select_down_path)
         v_right_layout.addWidget(btn_open_download_path)
         v_right_layout.addWidget(btn_select_file_path)
@@ -221,9 +221,17 @@ class Main(QWidget):
         print(cmd)
 
     def upload_apks(self):
+        version_code = self.l_edit_version.text()
+        if not version_code:
+            QMessageBox.about(self, 'error', '请输入本地提交版本号')
+            return
         main_data = self.drag_table.get_main_data()
         if main_data:
+            main_data["code"] = version_code
             self.serverClient.push_apks(main_data["content"], self.show_infos)
+            apk_infos_json = json.dumps(main_data)
+            print("提交日志" + apk_infos_json)
+            update_apk_infos(apk_infos_json)
 
     def get_table_infos(self):
         pass
@@ -325,8 +333,8 @@ class DragTable(QTableWidget):
                     shutil.copy(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["local_cache_path"] = abs_path
-        apk_infos_json = json.dumps(main_data)
-        print("移动后的数据" + apk_infos_json)
+        # apk_infos_json = json.dumps(main_data)
+        # print("移动后的数据" + apk_infos_json)
         # update_apk_infos(apk_infos_json)
 
     def set_platform(self, platform):
