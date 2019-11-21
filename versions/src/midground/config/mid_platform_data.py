@@ -1,3 +1,8 @@
+
+from ...config import config as gl
+from ...entity.config.config_index import *
+from ...entity.config.config_apk_upload import *
+
 package_name_map_f1 = {"com.dangbei.leard.leradlauncher": "LeradLauncher",
                        "com.dangbei.lerad.etna.sample": "Etna",
                        "com.tv.filemanager.os": "FileManager",
@@ -75,6 +80,10 @@ main_standard_data = {
         "length": "11111",
         "channel": "DBOS_F1"}]
 }
+
+
+def function():
+  pass
 
 
 
