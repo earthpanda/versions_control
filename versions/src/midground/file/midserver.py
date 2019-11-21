@@ -3,6 +3,8 @@
 import paramiko
 import os
 import re
+import json
+# from ..config.platform_data import *
 from ..config.mid_platform_data import *
 
 
@@ -36,19 +38,31 @@ class ServerClient:
 
         remote_apks = self.sftp_client.listdir(
             remote_system_apk_path[platform])
-        log = ""
-        for apk in remote_apks:
-            remote_path = remote_system_apk_path[platform] + "/" + apk
-            local_path = local_path_parent[platform] + "/" + apk
-            self.sftp_client.get(remote_path, local_path)
-            callback("下载文件:" + local_path)
-            # print(remote_path)
+        for file in remote_apks:
+            remote_path = remote_system_apk_path[platform] + "/" + file
+            local_path = local_path_parent[platform] + "/" + file
+            if file.endswith("apk"):
+                self.sftp_client.get(remote_path, local_path)
+                callback("下载文件:" + local_path)
+
+        # 下载当贝识字和tvui
+        remote_shi_zi = remote_pre_install_path[platform] + \
+            "/" + "DangbeiShizi.apk"
+        local_shi_zi = local_path_parent[platform] + "/" + "DangbeiShizi.apk"
+        remote_tvui = remote_tvui_path[platform] + "/" + "Tvui.apk"
+        local_tvui = local_path_parent[platform] + "/" + "Tvui.apk"
+        self.sftp_client.get(remote_shi_zi, local_shi_zi)
+        self.sftp_client.get(remote_tvui, local_tvui)
+        callback("下载文件" + local_shi_zi)
+        callback("下载文件" + local_tvui)
 
     def push_apks(self, apkInfos, callback):
         if not self.sftp_client:
             self.sftp_client = self.client.open_sftp()
+        info = json.dumps(apkInfos)
+        print("上传的apk信息" + info)
         for apkInfo in apkInfos:
-            local_path = apkInfo["localPath"]
+            local_path = apkInfo["local_cache_path"]
             remote_path = apkInfo["remote_full_path"]
             self.sftp_client.put(local_path, remote_path)
             callback("本地地址:{}--远程地址:{}".format(local_path, remote_path))

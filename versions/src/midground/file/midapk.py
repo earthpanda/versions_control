@@ -325,10 +325,11 @@ def _get_recent_file_name(folder_path):
 
 
 class ApkParser:
-
-    apkInfo = {'packageName': '', 'versionCode': '', 'versionName': '',
-               "localPath": ''}
-
+    # apkInfo = {'packageName': '', 'versionCode': '', 'versionName': '',
+               # "localPath": ''}
+    def __init__(self):
+        self.apkInfo = {}
+            
     def getAppBaseInfo(self, param_apk_path):
         get_info_command = "aapt dump badging %s" % (param_apk_path)
         output = os.popen(get_info_command).read()
@@ -349,5 +350,8 @@ class ApkParser:
         self.apkInfo['versionName'] = versionName
         self.apkInfo['localPath'] = param_apk_path
         self.apkInfo['channel'] = get_channel(param_apk_path)
-        self.apkInfo['md5'] = md5(param_apk_path)
-        self.apkInfo['length'] = file_size(param_apk_path)
+        self.apkInfo['md5'] = str(md5(param_apk_path))
+        self.apkInfo['length'] = str(file_size(param_apk_path))
+
+    def get_apkinfo():
+        return self.apkInfo

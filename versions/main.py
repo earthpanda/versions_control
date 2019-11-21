@@ -7,24 +7,17 @@
 apk上传固件小工具
 """
 
-import sys
-import random
-import re
-import os
-import json
 import shutil
+import sys
 
-from PyQt5.QtGui import QFont, QColor, QTextCursor
-from PyQt5.QtCore import Qt
-from PyQt5 import QtWidgets
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import *
 
-
-from src.midground.file.midserver import ServerClient
 from src.midground.config.mid_platform_data import *
 from src.midground.file.midapk import *
-from PyQt5.QtWidgets import *
+from src.midground.file.midserver import ServerClient
 from src.util.apk_info_reader import *
-import src.config.config as gl
+
 
 class Main(QWidget):
     """
@@ -33,6 +26,11 @@ class Main(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.l_edit_version = QLineEdit()
+        self.remote_branch_combobox = QComboBox()
+        self.text_edit_log = QTextEdit()
+        self.remote_apk_table = QTableWidget(15, 6)
+        self.drag_table = DragTable(15, 6)
         self.platform_kinds = ['F1', 'B1', 'C1', 'D1']
         self.current_platform = "F1"
         self.serverClient = ServerClient()
@@ -47,7 +45,6 @@ class Main(QWidget):
         self.setWindowTitle('文件上传以及信息打印')
         upload_label = QLabel("需要上传的apk，拖拽文件进入")
 
-        self.drag_table = DragTable(10, 6)
         self.drag_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                    '重命名', '渠道', '服务端路径'])
         self.drag_table.setAcceptDrops(True)
@@ -65,24 +62,22 @@ class Main(QWidget):
 
         # 手动输入版本号信息区域
         label_note_version = QLabel("请输入版本号:")
-        self.l_edit_version = QLineEdit()
-        sizePolicy = self.l_edit_version.sizePolicy()
-        sizePolicy.setHorizontalPolicy(QSizePolicy.Preferred)
-        self.l_edit_version.setSizePolicy(sizePolicy)
+        size_policy = self.l_edit_version.sizePolicy()
+        size_policy.setHorizontalPolicy(QSizePolicy.Preferred)
+        self.l_edit_version.setSizePolicy(size_policy)
 
         apk_down_path_label = QLabel("服务端apk下载文件目录")
-        self.l_edit_down_path = QLineEdit()
-        self.l_edit_down_path.setText(os.path.abspath('./remote_apks'))
+        l_edit_down_path = QLineEdit()
+        l_edit_down_path.setText(os.path.abspath('./remote_apks/F1'))
         btn_select_down_path = QPushButton("选择apk下载目录")
         btn_open_download_path = QPushButton("打开当前系统的下载目录")
 
         file_path_label = QLabel("apk提交信息记录文件保存路径")
-        self.l_edit_file_path = QLineEdit()
-        self.l_edit_file_path.setText(os.path.abspath('.'))
+        l_edit_file_path = QLineEdit()
+        l_edit_file_path.setText(os.path.abspath('.'))
         btn_select_file_path = QPushButton("选择文件保存路径")
 
         remote_apk_label = QLabel("远程apk包信息")
-        self.remote_apk_table = QTableWidget(10, 6)
         self.remote_apk_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                          '重命名', '渠道', '服务端路径'])
         self.remote_apk_table.horizontalHeader().resizeSection(0, 220)
@@ -90,13 +85,10 @@ class Main(QWidget):
 
         btn_action_down = QPushButton("下载apk并解析")
         log_view_label = QLabel("信息输出打印区")
-        self.text_edit_log = QTextEdit()
-        v_layout_actions = QVBoxLayout()
         open_file_btn = QPushButton("查看往期提交记录")
         upload_btn = QPushButton("上传文件")
 
         select_branch_label = QLabel("请选择需要切换的分支名")
-        self.remote_branch_combobox = QComboBox()
 
         btn_checkout_branch = QPushButton("切换到选中分支")
 
@@ -111,9 +103,9 @@ class Main(QWidget):
         v_left_layout.addWidget(upload_label)
         v_left_layout.addWidget(self.drag_table)
         v_left_layout.addWidget(apk_down_path_label)
-        v_left_layout.addWidget(self.l_edit_down_path)
+        v_left_layout.addWidget(l_edit_down_path)
         v_left_layout.addWidget(file_path_label)
-        v_left_layout.addWidget(self.l_edit_file_path)
+        v_left_layout.addWidget(l_edit_file_path)
         v_left_layout.addWidget(remote_apk_label)
         v_left_layout.addWidget(self.remote_apk_table)
         v_left_layout.addWidget(log_view_label)
@@ -135,12 +127,12 @@ class Main(QWidget):
         v_right_layout.addStretch(1)
 
         btn_select_down_path.clicked.connect(
-            lambda: self.openDirDialog(self.l_edit_down_path))
+            lambda: self.open_dir_dialog(l_edit_down_path, local_path_parent[self.current_platform]))
         btn_open_download_path.clicked.connect(
-            lambda: self.openDownloadDialog(gl.default_local_download_apk_path))
+            lambda: self.open_download_dialog(gl.default_local_download_apk_path))
         btn_select_file_path.clicked.connect(
-            lambda: self.openDirDialog(self.l_edit_file_path))
-        btn_action_down.clicked.connect(self.downApks)
+            lambda: self.open_dir_dialog(l_edit_file_path, "./"))
+        btn_action_down.clicked.connect(self.down_apks)
         btn_checkout_branch.clicked.connect(lambda:
                                             self.checkout_branch(self.remote_branch_combobox.currentText()))
         upload_btn.clicked.connect(self.upload_apks)
@@ -148,9 +140,9 @@ class Main(QWidget):
         self.setLayout(h_main_layout)
         self.show()
         # 登录服务器
-        self.serverClient.login(self.showInfos)
+        self.serverClient.login(self.show_infos)
         # 获取分支名称
-        self.serverClient.getBranch(self.showInfos, self.init_combo_box)
+        self.serverClient.getBranch(self.show_infos, self.init_combo_box)
 
         # 生成需要使用的文件夹路径
         download_path_f1 = "./remote_apks/F1"
@@ -165,17 +157,17 @@ class Main(QWidget):
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
 
-    def autoScrollTextEdit(self):
+    def auto_scroll_text_edit(self):
         cursor = self.text_edit_log.textCursor()
         cursor.movePosition(QTextCursor.End)
         self.text_edit_log.setTextCursor(cursor)
 
-    def openDirDialog(self, line_edit):
-        path = QFileDialog.getExistingDirectory(self, "", "./")
+    def open_dir_dialog(self, line_edit, relative_path):
+        path = QFileDialog.getExistingDirectory(self, "", relative_path)
         if path:
             line_edit.setText(path)
 
-    def openDownloadDialog(self, current_path):
+    def open_download_dialog(self, current_path):
         files, filetype = QFileDialog.getOpenFileNames(self,
                                                        "多文件选择",
                                                        current_path,  # 起始路径
@@ -186,52 +178,60 @@ class Main(QWidget):
         print("\n你选择的文件为:")
         for file in files:
             print(file)
-        self.drag_table.parseApks(files)
+        self.drag_table.parse_apks(files)
 
-    def downApks(self):
-        self.serverClient.download_apks(self.current_platform, self.showInfos)
+    def down_apks(self):
+        self.serverClient.download_apks(self.current_platform, self.show_infos)
         self.parse_remote_apks()
 
     def parse_remote_apks(self):
         parser = ApkParser()
-        remote_apk_path = "./remote_apks"
+        remote_apk_path = local_path_parent[self.current_platform]
         files = os.listdir(remote_apk_path)
         i = 0
         for file in files:
             if file.endswith("apk"):
                 remote_apk = os.path.join(remote_apk_path, file)
                 parser.getAppBaseInfo(remote_apk)
-                apkInfo = parser.apkInfo
+                apk_info = parser.apkInfo
                 self.remote_apk_table.setItem(i, 0,
-                                              QTableWidgetItem(apkInfo["packageName"]))
+                                              QTableWidgetItem(apk_info["packageName"]))
                 self.remote_apk_table.setItem(i, 1,
-                                              QTableWidgetItem(apkInfo["versionCode"]))
+                                              QTableWidgetItem(apk_info["versionCode"]))
                 self.remote_apk_table.setItem(i, 2,
-                                              QTableWidgetItem(apkInfo["versionName"]))
+                                              QTableWidgetItem(apk_info["versionName"]))
                 i += 1
 
     def change_platform(self):
         sender = self.sender()
-        if (sender.isChecked()):
+        if sender.isChecked():
             self.current_platform = sender.text()
             self.drag_table.set_platform(self.current_platform)
             print(self.current_platform)
 
-    def showInfos(self, info):
+    def show_infos(self, info):
         self.text_edit_log.append(info)
-        self.autoScrollTextEdit()
+        self.auto_scroll_text_edit()
 
-    def init_combo_box(self, branchs):
-        self.remote_branch_combobox.addItems(branchs)
+    def init_combo_box(self, branch):
+        self.remote_branch_combobox.addItems(branch)
 
     def checkout_branch(self, branch):
         cmd = 'git checkout {}'.format(branch.strip())
         print(cmd)
 
     def upload_apks(self):
+        version_code = self.l_edit_version.text()
+        if not version_code:
+            QMessageBox.about(self, 'error', '请输入本地提交版本号')
+            return
         main_data = self.drag_table.get_main_data()
         if main_data:
-            self.serverClient.push_apks(main_data["content"], self.showInfos)
+            main_data["code"] = version_code
+            self.serverClient.push_apks(main_data["content"], self.show_infos)
+            apk_infos_json = json.dumps(main_data)
+            print("提交日志" + apk_infos_json)
+            update_apk_infos(apk_infos_json)
 
     def get_table_infos(self):
         pass
@@ -253,8 +253,8 @@ class DragTable(QTableWidget):
     def dropEvent():
         print("ignore")
 
-    def dragEnterEvent(self, dragEnterEvent):
-        urls = dragEnterEvent.mimeData().urls()
+    def dragEnterEvent(self, drag_enter_event):
+        urls = drag_enter_event.mimeData().urls()
         url_uses = []
         for url in urls:
             print(os.name)
@@ -263,25 +263,24 @@ class DragTable(QTableWidget):
             else:
                 url_use = url.toString().replace("file:///", "/")
             url_uses.append(url_use)
-        self.parseApks(url_uses)
+        self.parse_apks(url_uses)
 
-    def parseApks(self, urls):
-        self.main_data = {}
-        self.main_data["model"] = self.current_platform
+    def parse_apks(self, urls):
+        self.main_data = {"model": self.current_platform}
         content = []
         i = 0
         for url in urls:
-            apkParser = ApkParser()
-            apkParser.getAppBaseInfo(url)
-            print(ApkParser.apkInfo)
-            apkInfo = ApkParser.apkInfo
+            apk_parser = ApkParser()
+            apk_parser.getAppBaseInfo(url)
+            # print(ApkParser.apkInfo)
+            apkInfo = apk_parser.apkInfo
             packageName = apkInfo["packageName"]
             self.setItem(i, 0, QTableWidgetItem(
-                ApkParser.apkInfo["packageName"]))
+                apkInfo["packageName"]))
             self.setItem(i, 1, QTableWidgetItem(
-                ApkParser.apkInfo["versionCode"]))
+                apkInfo["versionCode"]))
             self.setItem(i, 2, QTableWidgetItem(
-                ApkParser.apkInfo["versionName"]))
+                apkInfo["versionName"]))
             # print("当前的平台为:" + self.current_platform)
             # print("apk的本地路径为---" + apk.ApkParser.apkInfo["localPath"])
             name_map = final_name_platform[self.current_platform]
@@ -333,11 +332,9 @@ class DragTable(QTableWidget):
                         local_apk["rename"])
                     shutil.copy(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
-                    local_apk["localPath"] = abs_path
-                    # print(abs_path)
-                # self.serverClient.push_apks(main_data["content"],
-                #                             self.showInfos)
+                    local_apk["local_cache_path"] = abs_path
         # apk_infos_json = json.dumps(main_data)
+        # print("移动后的数据" + apk_infos_json)
         # update_apk_infos(apk_infos_json)
 
     def set_platform(self, platform):
