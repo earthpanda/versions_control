@@ -95,3 +95,7 @@ main_standard_data = {
         "length": "11111",
         "channel": "DBOS_F1"}]
 }
+
+
+def function():
+    pass
