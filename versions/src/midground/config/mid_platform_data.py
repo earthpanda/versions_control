@@ -13,6 +13,7 @@ package_name_map_f1 = {"com.dangbei.leard.leradlauncher": "LeradLauncher",
                        "com.dangbei.health.fitness.os": "Fitness",
                        "com.dangbei.mimir.pictureviewer": "PictureBrowser",
                        "com.dangbei.zhushou.os": "ProjectorManager",
+                       "com.dangbei.leard.smarthome": "SmartHome",
                        "com.dangbei.lerad.ota3435": "ControllerOta"}
 
 package_name_map_b1 = {"com.dangbei.leard.leradlauncher.b2": "LeradLauncher",
