@@ -1,9 +1,10 @@
 # 基于ssh,用于连接远程服务器做操作：远程执行命令，上传或下载文件
 
-import paramiko
-import os
-import re
 import json
+import re
+
+import paramiko
+
 # from ..config.platform_data import *
 from ..config.mid_platform_data import *
 
@@ -47,7 +48,7 @@ class ServerClient:
 
         # 下载当贝识字和tvui
         remote_shi_zi = remote_pre_install_path[platform] + \
-            "/" + "DangbeiShizi.apk"
+                        "/" + "DangbeiShizi.apk"
         local_shi_zi = local_path_parent[platform] + "/" + "DangbeiShizi.apk"
         remote_tvui = remote_tvui_path[platform] + "/" + "Tvui.apk"
         local_tvui = local_path_parent[platform] + "/" + "Tvui.apk"
@@ -94,6 +95,15 @@ class ServerClient:
         branch_line_b1 = re.search('\* (\w+)', res_b1)
         branch_b1 = branch_line_b1.group(1)
         callback("当前B1所处的分支为:" + branch_b1)
+
+        # 获取C1的当前分支
+        cmd_c1 = 'cd {}; git branch'.format(remote_code_path['C1'])
+        stdin, stdout, stderr = self.client.exec_command(cmd_c1)
+        res_c1 = stdout.read().decode('utf-8')
+        print(res_c1)
+        branch_line_c1 = re.search('\* (\w+)', res_c1)
+        branch_c1 = branch_line_c1.group(1)
+        callback("当前C1所处的分支为:" + branch_c1)
 
     def run_command(self, command, callback):
         stdin, stdout, stderr = self.client.exec_command(command)
