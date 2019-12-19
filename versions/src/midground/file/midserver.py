@@ -68,7 +68,16 @@ class ServerClient:
             self.sftp_client.put(local_path, remote_path)
             callback("本地地址:{}--远程地址:{}".format(local_path, remote_path))
 
-    def getBranch(self, callback, listBranchs):
+    def push_file(self, file_infos, callback):
+        if not self.sftp_client:
+            self.sftp_client = self.client.open_sftp()
+        for file in file_infos:
+            local_file_path = file["local_file_path"]
+            remote_file_path = file["remote_file_path"]
+            self.sftp_client.put(local_file_path, remote_file_path)
+            callback("本地地址:{}--远程地址:{}".format(local_file_path, remote_file_path))
+
+    def getBranch(self, callback):
         # 4.执行操作
         # 标准输入，标准输出，标准错误输出。
         cmd_f1 = 'cd {}; git branch'.format(remote_code_path["F1"])
@@ -85,7 +94,6 @@ class ServerClient:
         branch_line = re.search('\* (\w+)', res)
         branch = branch_line.group(1)
         callback("当前F1所处的分支为:" + branch)
-        listBranchs(res.split("\n"))
 
         # 获取B1的当前分支
         cmd_b1 = 'cd {}; git branch'.format(remote_code_path['B1'])

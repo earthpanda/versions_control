@@ -51,7 +51,8 @@ package_name_map_c1 = {"com.dangbei.leradlauncher.p1": "LeradLauncher",
                        "com.dangbei.zhushou.os": "ProjectorManager",
                        "com.dangbei.lerad.ota3435": "ControllerOta",
                        "com.dangbei.messageboard": "LeradMessageBoard",
-                       "com.hpplay.happyplay.aw.new": "Direction"}
+                       "com.hpplay.happyplay.aw.new": "Lebo",
+                       "com.dangbei.projector.direction.directionapplication": "Direction"}
 
 final_name_platform = {"F1": package_name_map_f1, "B1": package_name_map_b1, "C1": package_name_map_c1}
 
@@ -83,6 +84,18 @@ local_path_parent = {
     "F1": "./remote_apks/F1",
     "B1": "./remote_apks/B1",
     "C1": "./remote_apks/C1"
+}
+
+tvui_properties_path = {
+    "C1": "/home/user/workspace/work/msd6a358/code/device/mstar/bennet/apps/Tvui"
+}
+
+so_system_32_path = {
+    "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangs/systemlib"
+}
+
+so_system_64_path = {
+    "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangs/systemlib64"
 }
 
 main_standard_data = {

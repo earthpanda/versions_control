@@ -27,7 +27,6 @@ class Main(QWidget):
     def __init__(self):
         super().__init__()
         self.l_edit_version = QLineEdit()
-        self.remote_branch_combobox = QComboBox()
         self.text_edit_log = QTextEdit()
         self.remote_apk_table = QTableWidget(15, 6)
         self.drag_table = DragTable(15, 6)
@@ -44,6 +43,7 @@ class Main(QWidget):
         self.setGeometry(250, 100, 1200, 800)
         self.setWindowTitle('文件上传以及信息打印')
         upload_label = QLabel("需要上传的apk，拖拽文件进入")
+        upload_file_label = QLabel("需要上传的其他文件(so, tvui.properties)")
 
         self.drag_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                    '重命名', '渠道', '服务端路径'])
@@ -66,18 +66,10 @@ class Main(QWidget):
         size_policy.setHorizontalPolicy(QSizePolicy.Preferred)
         self.l_edit_version.setSizePolicy(size_policy)
 
-        apk_down_path_label = QLabel("服务端apk下载文件目录")
-        l_edit_down_path = QLineEdit()
-        l_edit_down_path.setText(os.path.abspath('./remote_apks/F1'))
-        btn_select_down_path = QPushButton("选择apk下载目录")
-        btn_open_download_path = QPushButton("打开当前系统的下载目录")
+        btn_open_download_path = QPushButton("选择需要上传的apk")
+        btn_open_other_file = QPushButton("选择需要上传的其它文件")
 
-        file_path_label = QLabel("apk提交信息记录文件保存路径")
-        l_edit_file_path = QLineEdit()
-        l_edit_file_path.setText(os.path.abspath('.'))
-        btn_select_file_path = QPushButton("选择文件保存路径")
-
-        remote_apk_label = QLabel("远程apk包信息")
+        remote_apk_label = QLabel("远程文件信息")
         self.remote_apk_table.setHorizontalHeaderLabels(['包名', '版本号', '版本名称',
                                                          '重命名', '渠道', '服务端路径'])
         self.remote_apk_table.horizontalHeader().resizeSection(0, 220)
@@ -88,9 +80,7 @@ class Main(QWidget):
         open_file_btn = QPushButton("查看往期提交记录")
         upload_btn = QPushButton("上传文件")
 
-        select_branch_label = QLabel("请选择需要切换的分支名")
-
-        btn_checkout_branch = QPushButton("切换到选中分支")
+        file_info_le = QLineEdit()
 
         # 主界面主布局，横行布局，分为左右两部分
         h_main_layout = QHBoxLayout()
@@ -102,12 +92,13 @@ class Main(QWidget):
         # 左边布局添加控件
         v_left_layout.addWidget(upload_label)
         v_left_layout.addWidget(self.drag_table)
-        v_left_layout.addWidget(apk_down_path_label)
-        v_left_layout.addWidget(l_edit_down_path)
-        v_left_layout.addWidget(file_path_label)
-        v_left_layout.addWidget(l_edit_file_path)
+
+        v_left_layout.addWidget(upload_file_label)
+        v_left_layout.addWidget(file_info_le)
+
         v_left_layout.addWidget(remote_apk_label)
         v_left_layout.addWidget(self.remote_apk_table)
+
         v_left_layout.addWidget(log_view_label)
         v_left_layout.addWidget(self.text_edit_log)
 
@@ -115,26 +106,20 @@ class Main(QWidget):
         v_right_layout.addLayout(platform_layout)
         v_right_layout.addWidget(label_note_version)
         v_right_layout.addWidget(self.l_edit_version)
-        v_right_layout.addWidget(btn_select_down_path)
         v_right_layout.addWidget(btn_open_download_path)
-        v_right_layout.addWidget(btn_select_file_path)
+        v_right_layout.addWidget(btn_open_other_file)
         v_right_layout.addWidget(btn_action_down)
         v_right_layout.addWidget(open_file_btn)
         v_right_layout.addWidget(upload_btn)
-        v_right_layout.addWidget(select_branch_label)
-        v_right_layout.addWidget(self.remote_branch_combobox)
-        v_right_layout.addWidget(btn_checkout_branch)
         v_right_layout.addStretch(1)
 
-        btn_select_down_path.clicked.connect(
-            lambda: self.open_dir_dialog(l_edit_down_path, local_path_parent[self.current_platform]))
         btn_open_download_path.clicked.connect(
-            lambda: self.open_download_dialog(gl.default_local_download_apk_path))
-        btn_select_file_path.clicked.connect(
-            lambda: self.open_dir_dialog(l_edit_file_path, "./"))
+            lambda: self.open_download_dialog(gl.default_local_download_apk_path, True))
+
+        btn_open_other_file.clicked.connect(
+            lambda: self.open_download_dialog(gl.default_local_download_apk_path, False))
+
         btn_action_down.clicked.connect(self.down_apks)
-        btn_checkout_branch.clicked.connect(lambda:
-                                            self.checkout_branch(self.remote_branch_combobox.currentText()))
         upload_btn.clicked.connect(self.upload_apks)
 
         self.setLayout(h_main_layout)
@@ -142,7 +127,7 @@ class Main(QWidget):
         # 登录服务器
         self.serverClient.login(self.show_infos)
         # 获取分支名称
-        self.serverClient.getBranch(self.show_infos, self.init_combo_box)
+        self.serverClient.getBranch(self.show_infos)
 
         # 生成需要使用的文件夹路径
         download_path_f1 = "./remote_apks/F1"
@@ -167,7 +152,7 @@ class Main(QWidget):
         if path:
             line_edit.setText(path)
 
-    def open_download_dialog(self, current_path):
+    def open_download_dialog(self, current_path, apk):
         files, filetype = QFileDialog.getOpenFileNames(self,
                                                        "多文件选择",
                                                        current_path,  # 起始路径
@@ -178,7 +163,27 @@ class Main(QWidget):
         print("\n你选择的文件为:")
         for file in files:
             print(file)
-        self.drag_table.parse_apks(files)
+        if apk:
+            self.drag_table.parse_apks(files)
+        else:
+            self.push_file(files)
+
+    def push_file(self, files):
+        push_infos = []
+        for file in files:
+            names = str(file).rsplit("/", 1)
+            push_info = {"local_file_path": file}
+            if file.endswith('so'):
+                remote_path = so_system_64_path[self.current_platform]
+                print(remote_path)
+                push_info["remote_file_path"] = os.path.join(remote_path, names[1])
+            elif file.endswith('properties'):
+                remote_path = tvui_properties_path[self.current_platform]
+                print(remote_path)
+                push_info["remote_file_path"] = os.path.join(remote_path, names[1])
+            push_infos.append(push_info)
+        self.serverClient.push_file(push_infos, self.show_infos)
+        return push_infos
 
     def down_apks(self):
         self.serverClient.download_apks(self.current_platform, self.show_infos)
@@ -213,9 +218,6 @@ class Main(QWidget):
         self.text_edit_log.append(info)
         self.auto_scroll_text_edit()
 
-    def init_combo_box(self, branch):
-        self.remote_branch_combobox.addItems(branch)
-
     def checkout_branch(self, branch):
         cmd = 'git checkout {}'.format(branch.strip())
         print(cmd)
@@ -249,9 +251,6 @@ class DragTable(QTableWidget):
         self.setAcceptDrops(True)
         self.horizontalHeader().resizeSection(0, 220)
         self.horizontalHeader().resizeSection(5, 380)
-
-    def dropEvent():
-        print("ignore")
 
     def dragEnterEvent(self, drag_enter_event):
         urls = drag_enter_event.mimeData().urls()
@@ -294,8 +293,8 @@ class DragTable(QTableWidget):
             pre_apk_path = remote_pre_install_path[self.current_platform]
             # Tvui 远程地址
             tvui_path = remote_tvui_path[self.current_platform]
-            # 服务器具体地址
-            if "com.dangbei.leard.literacy" == packageName:
+            # 服务器具体地址 literacy当贝识字   happyplay 乐播投屏
+            if "com.dangbei.leard.literacy" == packageName or "com.hpplay.happyplay.aw.new" == packageName:
                 apkInfo["remote_full_path"] = (pre_apk_path + "/" +
                                                name_map[packageName] + ".apk")
             elif "com.aispeech.tvui" == packageName:
@@ -333,9 +332,6 @@ class DragTable(QTableWidget):
                     shutil.copy(local_path, local_rename_path)
                     abs_path = os.path.abspath(local_rename_path)
                     local_apk["local_cache_path"] = abs_path
-        # apk_infos_json = json.dumps(main_data)
-        # print("移动后的数据" + apk_infos_json)
-        # update_apk_infos(apk_infos_json)
 
     def set_platform(self, platform):
         self.current_platform = platform
