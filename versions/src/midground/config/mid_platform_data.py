@@ -52,11 +52,12 @@ package_name_map_c1 = {"com.dangbei.leradlauncher.p1": "LeradLauncher",
                        "com.dangbei.lerad.ota3435": "ControllerOta",
                        "com.dangbei.messageboard": "LeradMessageBoard",
                        "com.hpplay.happyplay.aw.new": "Lebo",
-                       "com.dangbei.projector.direction.directionapplication": "Direction"}
+                       "com.dangbei.projector.direction.directionapplication": "LeradDirection"}
 
 final_name_platform = {"F1": package_name_map_f1, "B1": package_name_map_b1, "C1": package_name_map_c1}
 
-pre_install_apks = ["com.dangbei.leard.literacy"]
+pre_install_apks = ["com.dangbei.leard.literacy", "com.hpplay.happyplay.aw.new",
+                    "com.dangbei.projector.direction.directionapplication"]
 
 remote_work_parent_dir = "/home/user/workspace/work"
 

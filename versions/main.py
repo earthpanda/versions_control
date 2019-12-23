@@ -293,8 +293,8 @@ class DragTable(QTableWidget):
             pre_apk_path = remote_pre_install_path[self.current_platform]
             # Tvui 远程地址
             tvui_path = remote_tvui_path[self.current_platform]
-            # 服务器具体地址 literacy当贝识字   happyplay 乐播投屏
-            if "com.dangbei.leard.literacy" == packageName or "com.hpplay.happyplay.aw.new" == packageName:
+            # 服务器具体地址 literacy当贝识字   happyplay 乐播投屏 Di
+            if packageName in pre_install_apks:
                 apkInfo["remote_full_path"] = (pre_apk_path + "/" +
                                                name_map[packageName] + ".apk")
             elif "com.aispeech.tvui" == packageName:
