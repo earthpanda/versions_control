@@ -13,7 +13,7 @@ package_name_map_f1 = {"com.dangbei.leard.leradlauncher": "LeradLauncher",
                        "com.dangbei.health.fitness.os": "Fitness",
                        "com.dangbei.mimir.pictureviewer": "PictureBrowser",
                        "com.dangbei.zhushou.os": "ProjectorManager",
-                       "com.dangbei.leard.smarthome": "SmartHome",
+                       "com.dangbei.leard.smarthome": "LeradSmartHome",
                        "com.dangbei.lerad.ota3435": "ControllerOta"}
 
 package_name_map_b1 = {"com.dangbei.leard.leradlauncher.b2": "LeradLauncher",
@@ -26,11 +26,15 @@ package_name_map_b1 = {"com.dangbei.leard.leradlauncher.b2": "LeradLauncher",
                        "com.dangbei.leard.literacy": "DangbeiShizi",
                        "com.dangbei.leard.settings": "LeradSettings",
                        "com.dangbei.leard.mediaplayer": "LeradMediaPlayer",
+                       "com.dangbei.lerad.mediaplayer": "LeradMediaPlayer",
                        "com.dangbei.joylink": "JoyLink",
                        "com.dangbei.lerad.leradwatcher": "LeradWatcher",
                        "com.dangbei.health.fitness.os": "Fitness",
                        "com.dangbei.mimir.pictureviewer": "PictureBrowser",
                        "com.dangbei.zhushou.os": "ProjectorManager",
+                       "com.dangbei.messageboard": "LeradMessageBoard",
+                       "com.dangbei.leard.smarthome": "LeradSmartHome",
+                       "com.dangbei.projector.direction.directionapplication": "Direction",
                        "com.dangbei.lerad.ota3435": "ControllerOta"}
 
 package_name_map_c1 = {"com.dangbei.leradlauncher.p1": "LeradLauncher",
@@ -88,7 +92,12 @@ local_path_parent = {
 }
 
 tvui_properties_path = {
-    "C1": "/home/user/workspace/work/msd6a358/code/device/mstar/bennet/apps/Tvui"
+    "C1": "/home/user/workspace/work/msd6a358/code/device/mstar/bennet/apps/Tvui",
+    "B1": "/home/user/workspace/work/AmlogicS912Box/code/device/amlogic/q200/files"
+}
+
+theme_package = {
+    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk"
 }
 
 so_system_32_path = {
@@ -96,7 +105,8 @@ so_system_32_path = {
 }
 
 so_system_64_path = {
-    "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangs/systemlib64"
+    "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangs/systemlib64",
+    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemlib64"
 }
 
 main_standard_data = {

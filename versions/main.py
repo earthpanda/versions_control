@@ -181,6 +181,10 @@ class Main(QWidget):
                 remote_path = tvui_properties_path[self.current_platform]
                 print(remote_path)
                 push_info["remote_file_path"] = os.path.join(remote_path, names[1])
+            elif "theme" in file:
+                remote_path = theme_package[self.current_platform]
+                print(remote_path)
+                push_info["remote_file_path"] = os.path.join(remote_path, names[1])
             push_infos.append(push_info)
         self.serverClient.push_file(push_infos, self.show_infos)
         return push_infos
