@@ -132,12 +132,16 @@ class Main(QWidget):
         # 生成需要使用的文件夹路径
         download_path_f1 = "./remote_apks/F1"
         download_path_b1 = "./remote_apks/B1"
+        download_path_c1 = "./remote_apks/C1"
         cache_path = "./cache_apks"
         if not os.path.exists(download_path_f1):
             os.makedirs(download_path_f1)
 
         if not os.path.exists(download_path_b1):
             os.makedirs(download_path_b1)
+
+        if not os.path.exists(download_path_c1):
+            os.makedirs(download_path_c1)
 
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
