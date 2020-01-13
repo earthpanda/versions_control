@@ -97,7 +97,8 @@ tvui_properties_path = {
 }
 
 theme_package = {
-    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk"
+    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk",
+    "F1": "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk"
 }
 
 so_system_32_path = {
