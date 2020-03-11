@@ -113,6 +113,16 @@ class ServerClient:
         branch_c1 = branch_line_c1.group(1)
         callback("当前C1所处的分支为:" + branch_c1)
 
+        # 获取D1的当前分支
+        cmd_d1 = 'cd {}; git branch'.format(remote_code_path['D1'])
+        stdin, stdout, stderr = self.client.exec_command(cmd_d1)
+        res_d1 = stdout.read().decode('utf-8')
+        print(res_d1)
+        branch_line_d1 = re.search('\* (\w+)', res_d1)
+        branch_d1 = branch_line_d1.group(1)
+        callback("当前D1所处的分支为:" + branch_d1)
+
+
     def run_command(self, command, callback):
         stdin, stdout, stderr = self.client.exec_command(command)
         res = stdout.read().decode('utf-8')
