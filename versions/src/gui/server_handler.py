@@ -1,8 +1,8 @@
 # 基于ssh,用于连接远程服务器做操作：远程执行命令，上传或下载文件
 
-import paramiko
-import os
 import re
+
+import paramiko
 
 
 class ServerClient:
@@ -48,7 +48,8 @@ class ServerClient:
         for apkInfo in apkInfos:
             local_path = apkInfo["localPath"]
             remote_path = apkInfo["remote_full_path"]
-            self.sftp_client.put(local_path, remote_path)
+            self.sftp_client.chdir(remote_path)
+            self.sftp_client.put(local_path)
             callback("本地地址:{}--远程地址:{}".format(local_path, remote_path))
 
     def getBranch(self, callback, listBranchs):
