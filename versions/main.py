@@ -8,8 +8,8 @@ apk上传固件小工具
 """
 
 import shutil
-import sys
 
+import sys
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import *
 
@@ -301,6 +301,9 @@ class DragTable(QTableWidget):
             pre_apk_path = remote_pre_install_path[self.current_platform]
             # Tvui 远程地址
             tvui_path = remote_tvui_path[self.current_platform]
+            # Etna 远程地址
+            etna_path = remote_priv_app_install_path[self.current_platform]
+
             # 服务器具体地址 literacy当贝识字   happyplay 乐播投屏 Di
             if packageName in pre_install_apks:
                 apkInfo["remote_full_path"] = (pre_apk_path + "/" +
@@ -308,6 +311,8 @@ class DragTable(QTableWidget):
             elif "com.aispeech.tvui" == packageName:
                 apkInfo["remote_full_path"] = (tvui_path + "/" +
                                                name_map[packageName] + ".apk")
+            elif packageName in priv_install_apks:
+                apkInfo["remote_full_path"] = (etna_path + "/" + name_map[packageName] + ".apk")
             else:
                 apkInfo["remote_full_path"] = (system_apk_path + "/" +
                                                name_map[packageName] + ".apk")

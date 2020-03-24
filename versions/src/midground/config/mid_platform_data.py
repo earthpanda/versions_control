@@ -88,6 +88,8 @@ pre_install_apks = ["com.dangbei.leard.literacy", "com.hpplay.happyplay.aw.new",
                     "com.dangbei.projector.direction.directionapplication",
                     "com.hpplay.happyplay.aw"]
 
+priv_install_apks = ["com.dangbei.lerad.etna.sample"]
+
 remote_work_parent_dir = "/home/user/workspace/work"
 
 remote_code_path = {"F1": "/home/user/workspace/work/mstar938vfc/code",
@@ -104,6 +106,13 @@ remote_pre_install_path = {"F1": "/home/user/workspace/work/mstar938vfc/code/ven
                            "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/preinstall",
                            "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangbei/preinstall",
                            "D1": "/home/user/workspace/work/msd6a358_s1/code/vendor/dangs/preinstall"}
+
+remote_priv_app_install_path = {
+    "F1": "/home/user/workspace/work/mstar938vfc/code/vendor/mstar/dangs/systemapk",
+    "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk",
+    "C1": "/home/user/workspace/work/msd6a358/code/vendor/dangbei/priv-app",
+    "D1": "/home/user/workspace/work/msd6a358_s1/code/vendor/dangs/systemapk"
+}
 
 remote_tvui_path = {"F1": "/home/user/workspace/work/mstar938vfc/code/device/mstar/mangosteen/apps/Tvui",
                     "B1": "/home/user/workspace/work/AmlogicS912Box/code/vendor/dangs/systemapk",
